@@ -1,0 +1,134 @@
+/* ── The Tally Lab — Shared Navigation ──────────────────────── */
+:root {
+  --tl-nav-h: 52px;
+  --tl-nav-bg: #1c1917;
+}
+
+/* Push all page content below the fixed bar */
+body {
+  padding-top: calc(var(--tl-nav-h) + env(safe-area-inset-top));
+}
+
+/* ── Bar structure ───────────────────────────────────────────── */
+.tl-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: var(--tl-nav-bg);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06), 0 2px 16px rgba(0,0,0,0.3);
+  /* safe-area padding so content sits below notch */
+  padding-top: env(safe-area-inset-top);
+}
+
+.tl-nav-inner {
+  height: var(--tl-nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  gap: 12px;
+}
+
+/* ── Logo ────────────────────────────────────────────────────── */
+.tl-logo {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.5rem;
+  color: #ffffff;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  flex-shrink: 0;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.tl-logo:hover { opacity: 0.8; }
+
+/* ── Desktop links ───────────────────────────────────────────── */
+.tl-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.tl-nav-links a {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  transition: color 0.15s, background 0.15s;
+}
+
+.tl-nav-links a:hover  { color: #fff; background: rgba(255,255,255,0.1); }
+.tl-nav-links a.active { color: #fff; background: rgba(255,255,255,0.13); }
+
+/* ── Hamburger button ────────────────────────────────────────── */
+.tl-hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.8);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+
+.tl-hamburger:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+/* Icon swap on open */
+.tl-icon-open  { display: block; }
+.tl-icon-close { display: none;  }
+
+.tl-nav.menu-open .tl-icon-open  { display: none;  }
+.tl-nav.menu-open .tl-icon-close { display: block; }
+
+/* ── Mobile dropdown ─────────────────────────────────────────── */
+.tl-mobile-menu {
+  display: none;
+  flex-direction: column;
+  background: #141210;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 4px 0 8px;
+}
+
+.tl-nav.menu-open .tl-mobile-menu { display: flex; }
+
+.tl-mobile-menu a {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+  padding: 13px 20px;
+  border-left: 3px solid transparent;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+
+.tl-mobile-menu a:hover  { background: rgba(255,255,255,0.05); color: #fff; }
+.tl-mobile-menu a.active { color: #fff; border-left-color: rgba(255,255,255,0.5); }
+
+/* ── Breakpoint: ≤ 560px → hamburger ────────────────────────── */
+@media (max-width: 560px) {
+  .tl-nav-links { display: none; }
+  .tl-hamburger { display: flex; }
+}
+
+/* Prevent desktop dropdown from ever showing */
+@media (min-width: 561px) {
+  .tl-mobile-menu { display: none !important; }
+}
