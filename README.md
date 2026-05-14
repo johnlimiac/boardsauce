@@ -1,4 +1,4 @@
-# 🥫 Board Sauce (formerly Pip & Pad)
+# 🥫 Board Sauce
 **The secret sauce for your table.**
 
 Board Sauce is a suite of mobile-first, high-utility digital companions designed to eliminate the "friction" of analog gaming. No more manual math, lost score-pads, or rule disputes—just pure gameplay.
