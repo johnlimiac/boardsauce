@@ -22,60 +22,6 @@
   <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="../css/nav.css" />
   <link rel="stylesheet" href="../css/flip7.css" />
-
-  <style>
-    /* ── Pill bar that replaces the old game-screen header ────── */
-    .flip-pill-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 8px 12px;
-      background: var(--card-body);
-      border-bottom: 2px solid var(--border);
-      flex-shrink: 0;
-    }
-
-    .flip-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.65rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.15s, border-color 0.15s;
-      background: var(--surface);
-      border: 2px solid var(--border);
-      color: var(--muted);
-    }
-
-    .flip-pill:hover { background: #e4ddc8; border-color: #a8a080; }
-
-    .flip-pill-danger {
-      color: #991b1b;
-      border-color: #fca5a5;
-      background: #fef2f2;
-    }
-    .flip-pill-danger:hover { background: #fee2e2; border-color: #f87171; }
-
-    #mode-title {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.35rem;
-      color: var(--text);
-      line-height: 1;
-      text-align: center;
-      flex: 1;
-    }
-
-    /* Remove safe-area top padding from old header — nav handles it now */
-    .header { display: none !important; }
-  </style>
 </head>
 <body>
 
@@ -136,7 +82,11 @@
       <div class="player-row"><input type="text" value="Player 2"></div>
     </div>
     <button class="add-player-link" onclick="addPlayerRow()">+ Add Another Player</button>
-    <button class="primary-btn" style="margin-top:auto;" onclick="start()">START SESSION</button>
+    
+    <div class="setup-actions">
+      <button class="primary-btn" onclick="start()">START SESSION</button>
+      <button class="rules-btn" onclick="showRules()">HOW TO PLAY</button>
+    </div>
   </div>
 
   <div id="game-screen">
@@ -146,9 +96,12 @@
         ← Game Modes
       </button>
       <h2 id="mode-title">FLIP 7</h2>
-      <button class="flip-pill flip-pill-danger" onclick="restartGame(true)" aria-label="Start new game">
-        New Game
-      </button>
+      <div class="flip-pill-right">
+        <button class="flip-pill flip-pill-rules" onclick="showRules()" aria-label="How to play">Rules</button>
+        <button class="flip-pill flip-pill-danger" onclick="restartGame(true)" aria-label="Start new game">
+          New Game
+        </button>
+      </div>
     </div>
 
     <div class="round-indicator">RD <span id="rd-num">1</span></div>
@@ -188,7 +141,122 @@
   <div class="f7-ov-sub">Seven cards — +15 bonus!</div>
 </div>
 
+<!-- Rules Overlay -->
+<div id="rules-overlay" role="dialog" aria-modal="true" aria-label="How to Play Flip 7">
+  <div class="rules-box">
+    <button class="rules-close" onclick="hideRules()" aria-label="Close rules">×</button>
+    <div class="rules-content">
+      <h2 class="rules-title">How to Play</h2>
+      
+      <div class="rules-tabs">
+        <button class="tab-btn active" onclick="switchTab('base')">Base Game</button>
+        <button class="tab-btn" onclick="switchTab('vengeance')">Vengeance</button>
+      </div>
+
+      <div id="rules-base" class="rules-tab-content active">
+        <div class="rules-section">
+          <h3>The Goal</h3>
+          <p>Be the first player to reach <strong>200 points</strong> by flipping cards and banking their values.</p>
+        </div>
+
+        <div class="rules-section">
+          <h3>On Your Turn</h3>
+          <p>Flip the top card of the deck. You can then:</p>
+          <ul class="rules-list">
+            <li><strong>Hit:</strong> Flip another card.</li>
+            <li><strong>Stay:</strong> Bank your current cards and end your round.</li>
+          </ul>
+        </div>
+
+        <div class="rules-section">
+          <h3>Busting 💥</h3>
+          <p>If you flip a number you <strong>already have</strong> in your line, you bust! Your score for the round becomes 0.</p>
+        </div>
+
+        <div class="rules-section">
+          <h3>Flip 7 Bonus 🃏</h3>
+          <p>Collect <strong>7 unique numbers</strong> without busting to end the round immediately and get a <strong>+15 point bonus</strong>!</p>
+        </div>
+
+        <div class="rules-section">
+          <h3>Action Cards</h3>
+          <div class="rules-card-grid">
+            <div class="rules-card-item">
+              <div class="card-mini">❄️</div>
+              <div class="card-desc"><strong>Freeze:</strong> Forces you to Stay immediately.</div>
+            </div>
+            <div class="rules-card-item">
+              <div class="card-mini">🔄</div>
+              <div class="card-desc"><strong>2nd Chance:</strong> Discard instead of busting once.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="rules-vengeance" class="rules-tab-content">
+        <div class="rules-section">
+          <h3>Vengeful Rules</h3>
+          <p>This mode is more aggressive. Even if you <strong>Stay</strong>, you are still in the round and can be targeted!</p>
+        </div>
+
+        <div class="rules-section">
+          <h3>Special Cards</h3>
+          <div class="rules-card-grid">
+            <div class="rules-card-item">
+              <div class="card-mini card-zero">0</div>
+              <div class="card-desc"><strong>Zero:</strong> Score is 0 unless you Flip 7. Must Hit every turn!</div>
+            </div>
+            <div class="rules-card-item">
+              <div class="card-mini card-seven">7</div>
+              <div class="card-desc"><strong>Unlucky 7:</strong> Discard all cards except this one.</div>
+            </div>
+            <div class="rules-card-item">
+              <div class="card-mini card-thirteen">13</div>
+              <div class="card-desc"><strong>Lucky 13:</strong> You can have two 13s without busting.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rules-section">
+          <h3>Vengeance Actions</h3>
+          <ul class="rules-list">
+            <li><strong>Steal:</strong> Take a card from another player.</li>
+            <li><strong>Swap:</strong> Swap cards between two players.</li>
+            <li><strong>Just One More:</strong> Force a player to flip one more card.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <button class="rules-done-btn" onclick="hideRules()">GOT IT</button>
+  </div>
+</div>
+
 <script src="../js/nav.js"></script>
+<script>
+  window.showRules = function() {
+    const overlay = document.getElementById('rules-overlay');
+    if (overlay) overlay.classList.add('visible');
+  };
+  window.hideRules = function() {
+    const overlay = document.getElementById('rules-overlay');
+    if (overlay) overlay.classList.remove('visible');
+  };
+  window.switchTab = function(tab) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.rules-tab-content').forEach(content => content.classList.remove('active'));
+    
+    event.currentTarget.classList.add('active');
+    document.getElementById('rules-' + tab).classList.add('active');
+  };
+
+  // Close rules on background click
+  const rulesOverlay = document.getElementById('rules-overlay');
+  if (rulesOverlay) {
+    rulesOverlay.addEventListener('click', function(e) {
+      if (e.target === rulesOverlay) hideRules();
+    });
+  }
+</script>
 <script src="../js/app.js"></script>
 </body>
 </html>

@@ -93,6 +93,16 @@ function newGame() {
   }
 }
 
+window.showRules = function showRules() {
+  const overlay = document.getElementById('rules-overlay');
+  if (overlay) overlay.classList.add('visible');
+};
+
+window.hideRules = function hideRules() {
+  const overlay = document.getElementById('rules-overlay');
+  if (overlay) overlay.classList.remove('visible');
+};
+
 // ── Score calculations ────────────────────────────────────────
 function upperRaw(p)   { return UPPER.reduce((s, c) => s + (state.scores[p][c.id] ?? 0), 0); }
 function upperBonus(p) { return upperRaw(p) >= 63 ? 35 : 0; }
@@ -318,4 +328,14 @@ function showYahtzeeOverlay() {
 }
 
 // ── Boot ─────────────────────────────────────────────────────
-window.addEventListener('load', load);
+window.addEventListener('load', function() {
+  load();
+
+  // Close rules on background click
+  const rulesOverlay = document.getElementById('rules-overlay');
+  if (rulesOverlay) {
+    rulesOverlay.addEventListener('click', function(e) {
+      if (e.target === rulesOverlay) hideRules();
+    });
+  }
+});

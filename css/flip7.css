@@ -270,3 +270,258 @@
   .f7-ov-card { animation: none; }
   .f7-ov-text { animation: none; color: #93c5fd; }
 }
+
+/* ── Pill bar ── */
+.flip-pill-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--card-body);
+  border-bottom: 2px solid var(--border);
+  flex-shrink: 0;
+}
+
+.flip-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  color: var(--muted);
+}
+.flip-pill:hover { background: #e4ddc8; border-color: #a8a080; }
+
+.flip-pill-danger {
+  color: #991b1b;
+  border-color: #fca5a5;
+  background: #fef2f2;
+}
+.flip-pill-danger:hover { background: #fee2e2; border-color: #f87171; }
+
+#mode-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.35rem;
+  color: var(--text);
+  line-height: 1;
+  text-align: center;
+  flex: 1;
+}
+
+.setup-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.rules-btn {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: all 0.2s;
+  touch-action: manipulation;
+}
+.rules-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+
+.flip-pill-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.flip-pill-rules {
+  color: var(--accent-blue);
+  border-color: rgba(37, 99, 235, 0.2);
+}
+.flip-pill-rules:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+
+/* ── Rules Overlay ── */
+#rules-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(43, 40, 31, 0.8);
+  padding: 20px;
+  backdrop-filter: blur(6px);
+}
+#rules-overlay.visible { display: flex; }
+
+.rules-box {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 28px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+
+.rules-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--card-body);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.rules-content {
+  padding: 32px 24px 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.rules-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 2.4rem;
+  color: var(--text);
+  margin-bottom: 24px;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+.rules-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  background: var(--card-body);
+  padding: 4px;
+  border-radius: 12px;
+}
+.tab-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tab-btn.active {
+  background: var(--surface);
+  color: var(--accent-blue);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.rules-tab-content { display: none; }
+.rules-tab-content.active { display: block; }
+
+.rules-section { margin-bottom: 28px; }
+.rules-section h3 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.rules-section p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.rules-list {
+  margin-left: 20px;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+.rules-list li { margin-bottom: 8px; }
+
+.rules-card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.rules-card-item {
+  background: var(--card-body);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.card-mini {
+  width: 40px;
+  height: 56px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  color: var(--text);
+}
+.card-zero { color: #991b1b; border-color: #fca5a5; }
+.card-seven { color: #b45309; border-color: #fcd34d; }
+.card-thirteen { color: #15803d; border-color: #86efac; }
+
+.card-desc {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--text);
+}
+.card-desc strong { color: var(--accent-blue); }
+
+.rules-done-btn {
+  margin: 0 24px 24px;
+  padding: 16px;
+  background: var(--accent-blue);
+  border: none;
+  border-radius: 14px;
+  color: #fff;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.4rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.rules-done-btn:active { transform: scale(0.97); }
+

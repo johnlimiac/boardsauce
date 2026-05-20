@@ -90,6 +90,16 @@ window.goHome = function goHome() {
   showSetup();
 };
 
+window.showRules = function showRules() {
+  const overlay = document.getElementById('rules-overlay');
+  if (overlay) overlay.classList.add('visible');
+};
+
+window.hideRules = function hideRules() {
+  const overlay = document.getElementById('rules-overlay');
+  if (overlay) overlay.classList.remove('visible');
+};
+
 window.newGame = function newGame() {
   localStorage.removeItem('farkle_v1');
   G = {};
@@ -305,4 +315,14 @@ window.esc = function esc(s) {
     .replace(/'/g, '&#39;');
 };
 
-window.onload = load;
+window.onload = function() {
+  load();
+
+  // Close rules on background click
+  const rulesOverlay = document.getElementById('rules-overlay');
+  if (rulesOverlay) {
+    rulesOverlay.addEventListener('click', function(e) {
+      if (e.target === rulesOverlay) hideRules();
+    });
+  }
+};

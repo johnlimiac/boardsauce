@@ -20,38 +20,38 @@
 </head>
 <body>
 
+<nav class="tl-nav" aria-label="Main navigation">
+  <div class="tl-nav-inner">
+    <a href="../index.html" class="tl-logo" aria-label="Board Sauce Home">Board Sauce</a>
+    <div class="tl-nav-links">
+      <a href="../index.html">Home</a>
+      <a href="flip7.html">Flip 7</a>
+      <a href="yahtzee.html">Yahtzee</a>
+      <a href="farkle.html" class="active" aria-current="page">Farkle</a>
+    </div>
+    <button class="tl-hamburger" onclick="toggleNav()" aria-label="Toggle navigation menu" aria-expanded="false">
+      <svg class="tl-icon-open" width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
+        <rect width="20" height="2" rx="1" fill="currentColor"/>
+        <rect y="6" width="20" height="2" rx="1" fill="currentColor"/>
+        <rect y="12" width="20" height="2" rx="1" fill="currentColor"/>
+      </svg>
+      <svg class="tl-icon-close" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M1 1l14 14M15 1L1 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+  <div class="tl-mobile-menu" role="menu">
+    <a href="../index.html" role="menuitem">Home</a>
+    <a href="flip7.html" role="menuitem">Flip 7</a>
+    <a href="yahtzee.html" role="menuitem">Yahtzee</a>
+    <a href="farkle.html" class="active" role="menuitem" aria-current="page">Farkle</a>
+  </div>
+</nav>
+
 <!-- ══════════════════════════════════════════════
      SETUP SCREEN
 ══════════════════════════════════════════════ -->
 <div id="setup-screen">
-
-  <nav class="tl-nav" aria-label="Main navigation">
-    <div class="tl-nav-inner">
-      <a href="../index.html" class="tl-logo" aria-label="Board Sauce Home">Board Sauce</a>
-      <div class="tl-nav-links">
-        <a href="../index.html">Home</a>
-        <a href="flip7.html">Flip 7</a>
-        <a href="yahtzee.html">Yahtzee</a>
-        <a href="farkle.html" class="active" aria-current="page">Farkle</a>
-      </div>
-      <button class="tl-hamburger" onclick="toggleNav()" aria-label="Toggle navigation menu" aria-expanded="false">
-        <svg class="tl-icon-open" width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
-          <rect width="20" height="2" rx="1" fill="currentColor"/>
-          <rect y="6" width="20" height="2" rx="1" fill="currentColor"/>
-          <rect y="12" width="20" height="2" rx="1" fill="currentColor"/>
-        </svg>
-        <svg class="tl-icon-close" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M1 1l14 14M15 1L1 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
-    </div>
-    <div class="tl-mobile-menu" role="menu">
-      <a href="../index.html" role="menuitem">Home</a>
-      <a href="flip7.html" role="menuitem">Flip 7</a>
-      <a href="yahtzee.html" role="menuitem">Yahtzee</a>
-      <a href="farkle.html" class="active" role="menuitem" aria-current="page">Farkle</a>
-    </div>
-  </nav>
 
   <div class="setup-body">
 
@@ -84,7 +84,10 @@
 
     <button class="add-player-btn" onclick="addPlayer()">+ Add Another Player</button>
 
-    <button class="fk-start-btn" onclick="startGame()">START GAME</button>
+    <div class="setup-actions">
+      <button class="fk-start-btn" onclick="startGame()">START GAME</button>
+      <button class="fk-rules-btn" onclick="showRules()">HOW TO PLAY</button>
+    </div>
 
   </div>
 </div>
@@ -94,39 +97,14 @@
 ══════════════════════════════════════════════ -->
 <div id="game-screen">
 
-  <nav class="tl-nav" aria-label="Main navigation">
-    <div class="tl-nav-inner">
-      <a href="../index.html" class="tl-logo" aria-label="Board Sauce Home">Board Sauce</a>
-      <div class="tl-nav-links">
-        <a href="../index.html">Home</a>
-        <a href="flip7.html">Flip 7</a>
-        <a href="yahtzee.html">Yahtzee</a>
-        <a href="farkle.html" class="active" aria-current="page">Farkle</a>
-      </div>
-      <button class="tl-hamburger" onclick="toggleNav()" aria-label="Toggle navigation menu" aria-expanded="false">
-        <svg class="tl-icon-open" width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
-          <rect width="20" height="2" rx="1" fill="currentColor"/>
-          <rect y="6" width="20" height="2" rx="1" fill="currentColor"/>
-          <rect y="12" width="20" height="2" rx="1" fill="currentColor"/>
-        </svg>
-        <svg class="tl-icon-close" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M1 1l14 14M15 1L1 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
-    </div>
-    <div class="tl-mobile-menu" role="menu">
-      <a href="../index.html" role="menuitem">Home</a>
-      <a href="flip7.html" role="menuitem">Flip 7</a>
-      <a href="yahtzee.html" role="menuitem">Yahtzee</a>
-      <a href="farkle.html" class="active" role="menuitem" aria-current="page">Farkle</a>
-    </div>
-  </nav>
-
   <!-- Pill bar -->
   <div class="fk-pill-bar">
     <button class="fk-pill" onclick="goHome()" aria-label="Back to game setup">← Game Modes</button>
     <h2 id="mode-title-fk">FARKLE</h2>
-    <button class="fk-pill fk-pill-danger" onclick="newGame()" aria-label="Start new game">New Game</button>
+    <div class="fk-pill-right">
+      <button class="fk-pill fk-pill-rules" onclick="showRules()" aria-label="How to play">Rules</button>
+      <button class="fk-pill fk-pill-danger" onclick="newGame()" aria-label="Start new game">New Game</button>
+    </div>
   </div>
 
   <!-- Scoreboard -->
@@ -264,6 +242,71 @@
   <div class="hot-dice-emoji">🎲</div>
   <div class="hot-dice-text">HOT DICE!</div>
   <div class="hot-dice-sub">Roll all 6 — keep going!</div>
+</div>
+
+<!-- Rules Overlay -->
+<div id="rules-overlay" role="dialog" aria-modal="true" aria-label="How to Play Farkle">
+  <div class="rules-box">
+    <button class="rules-close" onclick="hideRules()" aria-label="Close rules">×</button>
+    <div class="rules-content">
+      <h2 class="rules-title">How to Play</h2>
+      
+      <div class="rules-section">
+        <h3>The Goal</h3>
+        <p>Be the first player to reach <strong>10,000 points</strong>.</p>
+      </div>
+
+      <div class="rules-section">
+        <h3>On Your Turn</h3>
+        <p>Roll all 6 dice. You must set aside at least one <strong>scoring die</strong> to keep rolling. You can then either:</p>
+        <ul class="rules-list">
+          <li><strong>Bank:</strong> Save your points and end your turn.</li>
+          <li><strong>Roll Again:</strong> Roll the remaining dice to add more points.</li>
+        </ul>
+      </div>
+
+      <div class="rules-section">
+        <h3>Farkle! 💥</h3>
+        <p>If you roll and get <strong>zero</strong> scoring dice, you Farkle. You lose all points gathered during that turn and it's the next player's turn.</p>
+      </div>
+
+      <div class="rules-section">
+        <h3>Hot Dice 🎲</h3>
+        <p>If you use all 6 dice to score, you have "Hot Dice"! You can pick up all 6 dice and keep rolling to continue your turn.</p>
+      </div>
+
+      <div class="rules-section">
+        <h3>Scoring Guide</h3>
+        <div class="rules-scoring-grid">
+          <div class="rules-score-item">
+            <div class="die-icon die-1"><span></span></div>
+            <div class="score-val">100 pts</div>
+          </div>
+          <div class="rules-score-item">
+            <div class="die-icon die-5"><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="score-val">50 pts</div>
+          </div>
+          <div class="rules-score-item">
+            <div class="die-multi">1·1·1</div>
+            <div class="score-val">1,000 pts</div>
+          </div>
+          <div class="rules-score-item">
+            <div class="die-multi">X·X·X</div>
+            <div class="score-val">100 × X</div>
+          </div>
+          <div class="rules-score-item">
+            <div class="die-multi">Straight</div>
+            <div class="score-val">1,500 pts</div>
+          </div>
+          <div class="rules-score-item">
+            <div class="die-multi">3 Pairs</div>
+            <div class="score-val">1,500 pts</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="rules-done-btn" onclick="hideRules()">GOT IT</button>
+  </div>
 </div>
 
 <!-- Game Over overlay -->

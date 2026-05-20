@@ -888,3 +888,189 @@ body {
   .yah-ov-dice { animation: none; }
   .yah-ov-text { animation: none; color: #fca5a5; }
 }
+
+.setup-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.yah-rules-btn {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  border: 2px solid var(--yah-border);
+  border-radius: 14px;
+  color: var(--yah-muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: all 0.2s;
+  touch-action: manipulation;
+}
+.yah-rules-btn:hover { border-color: var(--yah-red); color: var(--yah-red); }
+
+.game-ctrl-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.yah-pill {
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.yah-pill-rules {
+  background: var(--yah-surface);
+  border: 1.5px solid var(--yah-border);
+  color: var(--yah-red);
+}
+.yah-pill-rules:hover { border-color: var(--yah-red); }
+
+/* ── Rules Overlay ── */
+#rules-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.8);
+  padding: 20px;
+  backdrop-filter: blur(6px);
+}
+#rules-overlay.visible { display: flex; }
+
+.rules-box {
+  background: var(--yah-surface);
+  border: 2px solid var(--yah-border);
+  border-radius: 28px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+  overflow: hidden;
+}
+
+.rules-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--yah-bg);
+  border: 1px solid var(--yah-border);
+  color: var(--yah-muted);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.rules-content {
+  padding: 32px 24px 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.rules-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 2.4rem;
+  color: var(--yah-red);
+  margin-bottom: 24px;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+.rules-section { margin-bottom: 28px; }
+.rules-section h3 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--yah-muted);
+  margin-bottom: 10px;
+}
+.rules-section p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--yah-text);
+  margin-bottom: 12px;
+}
+.rules-list {
+  margin-left: 20px;
+  font-size: 0.95rem;
+  color: var(--yah-text);
+}
+.rules-list li { margin-bottom: 8px; }
+
+.rules-scoring-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.rules-score-item {
+  background: var(--yah-bg);
+  border: 1px solid var(--yah-border);
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.score-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--yah-muted);
+}
+
+.score-val {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.4rem;
+  color: var(--yah-red);
+  line-height: 1;
+}
+
+.rules-done-btn {
+  margin: 0 24px 24px;
+  padding: 16px;
+  background: var(--yah-red);
+  border: none;
+  border-radius: 14px;
+  color: #fff;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.4rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.rules-done-btn:active { transform: scale(0.97); }
+

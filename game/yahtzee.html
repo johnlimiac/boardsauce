@@ -20,38 +20,38 @@
 </head>
 <body>
 
+<nav class="tl-nav" aria-label="Main navigation">
+  <div class="tl-nav-inner">
+    <a href="../index.html" class="tl-logo" aria-label="Board Sauce Home">Board Sauce</a>
+    <div class="tl-nav-links">
+      <a href="../index.html">Home</a>
+      <a href="flip7.html">Flip 7</a>
+      <a href="yahtzee.html" class="active" aria-current="page">Yahtzee</a>
+      <a href="farkle.html">Farkle</a>
+    </div>
+    <button class="tl-hamburger" onclick="toggleNav()" aria-label="Toggle navigation menu" aria-expanded="false">
+      <svg class="tl-icon-open" width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
+        <rect width="20" height="2" rx="1" fill="currentColor"/>
+        <rect y="6" width="20" height="2" rx="1" fill="currentColor"/>
+        <rect y="12" width="20" height="2" rx="1" fill="currentColor"/>
+      </svg>
+      <svg class="tl-icon-close" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M1 1l14 14M15 1L1 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+  <div class="tl-mobile-menu" role="menu">
+    <a href="../index.html" role="menuitem">Home</a>
+    <a href="flip7.html" role="menuitem">Flip 7</a>
+    <a href="yahtzee.html" class="active" role="menuitem" aria-current="page">Yahtzee</a>
+    <a href="farkle.html" role="menuitem">Farkle</a>
+  </div>
+</nav>
+
 <!-- ══════════════════════════════════════════════
      SETUP SCREEN
 ═══════════════════════════════════════════════ -->
 <div id="setup-screen">
-
-  <nav class="tl-nav" aria-label="Main navigation">
-    <div class="tl-nav-inner">
-      <a href="../index.html" class="tl-logo" aria-label="Board Sauce Home">Board Sauce</a>
-      <div class="tl-nav-links">
-        <a href="../index.html">Home</a>
-        <a href="flip7.html">Flip 7</a>
-        <a href="yahtzee.html" class="active" aria-current="page">Yahtzee</a>
-        <a href="farkle.html">Farkle</a>
-      </div>
-      <button class="tl-hamburger" onclick="toggleNav()" aria-label="Toggle navigation menu" aria-expanded="false">
-        <svg class="tl-icon-open" width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
-          <rect width="20" height="2" rx="1" fill="currentColor"/>
-          <rect y="6" width="20" height="2" rx="1" fill="currentColor"/>
-          <rect y="12" width="20" height="2" rx="1" fill="currentColor"/>
-        </svg>
-        <svg class="tl-icon-close" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M1 1l14 14M15 1L1 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
-    </div>
-    <div class="tl-mobile-menu" role="menu">
-      <a href="../index.html" role="menuitem">Home</a>
-      <a href="flip7.html" role="menuitem">Flip 7</a>
-      <a href="yahtzee.html" class="active" role="menuitem" aria-current="page">Yahtzee</a>
-      <a href="farkle.html" role="menuitem">Farkle</a>
-    </div>
-  </nav>
 
   <div class="setup-body">
 
@@ -84,7 +84,10 @@
 
     <button class="add-player-btn" onclick="addPlayer()">+ Add Another Player</button>
 
-    <button class="yah-start-btn" onclick="startGame()">START GAME</button>
+    <div class="setup-actions">
+      <button class="yah-start-btn" onclick="startGame()">START GAME</button>
+      <button class="yah-rules-btn" onclick="showRules()">HOW TO PLAY</button>
+    </div>
 
   </div>
 </div>
@@ -94,37 +97,12 @@
 ═══════════════════════════════════════════════ -->
 <div id="game-screen">
 
-  <nav class="tl-nav" aria-label="Main navigation">
-    <div class="tl-nav-inner">
-      <a href="../index.html" class="tl-logo" aria-label="Board Sauce Home">Board Sauce</a>
-      <div class="tl-nav-links">
-        <a href="../index.html">Home</a>
-        <a href="flip7.html">Flip 7</a>
-        <a href="yahtzee.html" class="active" aria-current="page">Yahtzee</a>
-        <a href="farkle.html">Farkle</a>
-      </div>
-      <button class="tl-hamburger" onclick="toggleNav()" aria-label="Toggle navigation menu" aria-expanded="false">
-        <svg class="tl-icon-open" width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
-          <rect width="20" height="2" rx="1" fill="currentColor"/>
-          <rect y="6" width="20" height="2" rx="1" fill="currentColor"/>
-          <rect y="12" width="20" height="2" rx="1" fill="currentColor"/>
-        </svg>
-        <svg class="tl-icon-close" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M1 1l14 14M15 1L1 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
-    </div>
-    <div class="tl-mobile-menu" role="menu">
-      <a href="../index.html" role="menuitem">Home</a>
-      <a href="flip7.html" role="menuitem">Flip 7</a>
-      <a href="yahtzee.html" class="active" role="menuitem" aria-current="page">Yahtzee</a>
-      <a href="farkle.html" role="menuitem">Farkle</a>
-    </div>
-  </nav>
-
   <div class="game-ctrl-bar">
     <span class="game-status">● In Progress</span>
-    <button class="new-game-btn" onclick="newGame()">New Game</button>
+    <div class="game-ctrl-right">
+      <button class="yah-pill yah-pill-rules" onclick="showRules()" aria-label="How to play">Rules</button>
+      <button class="new-game-btn" onclick="newGame()">New Game</button>
+    </div>
   </div>
 
   <div class="score-area" role="region" aria-label="Scorecard">
@@ -150,6 +128,62 @@
   <div class="yah-ov-dice">🎲🎲🎲🎲🎲</div>
   <div class="yah-ov-text">YAHTZEE!</div>
   <div class="yah-ov-sub">Five of a kind!</div>
+</div>
+
+<!-- Rules Overlay -->
+<div id="rules-overlay" role="dialog" aria-modal="true" aria-label="How to Play Yahtzee">
+  <div class="rules-box">
+    <button class="rules-close" onclick="hideRules()" aria-label="Close rules">×</button>
+    <div class="rules-content">
+      <h2 class="rules-title">How to Play</h2>
+      
+      <div class="rules-section">
+        <h3>The Goal</h3>
+        <p>Score the most points by rolling five dice to make specific combinations across 13 rounds.</p>
+      </div>
+
+      <div class="rules-section">
+        <h3>On Your Turn</h3>
+        <p>You get up to <strong>3 rolls</strong> per turn:</p>
+        <ul class="rules-list">
+          <li><strong>Roll 1:</strong> Roll all 5 dice.</li>
+          <li><strong>Roll 2 & 3:</strong> Keep any dice you like and reroll the rest.</li>
+        </ul>
+        <p>After your rolls, you <strong>must</strong> fill one empty category on your scorecard.</p>
+      </div>
+
+      <div class="rules-section">
+        <h3>Scoring Guide</h3>
+        <div class="rules-scoring-grid">
+          <div class="rules-score-item">
+            <div class="score-label">Full House</div>
+            <div class="score-val">25 pts</div>
+          </div>
+          <div class="rules-score-item">
+            <div class="score-label">Sm. Straight</div>
+            <div class="score-val">30 pts</div>
+          </div>
+          <div class="rules-score-item">
+            <div class="score-label">Lg. Straight</div>
+            <div class="score-val">40 pts</div>
+          </div>
+          <div class="rules-score-item">
+            <div class="score-label">Yahtzee</div>
+            <div class="score-val">50 pts</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rules-section">
+        <h3>Bonuses</h3>
+        <ul class="rules-list">
+          <li><strong>Upper Bonus:</strong> Score 63+ in the upper section (Ones–Sixes) to get <strong>+35 pts</strong>.</li>
+          <li><strong>Yahtzee Bonus:</strong> Every extra Yahtzee after the first is worth <strong>+100 pts</strong>!</li>
+        </ul>
+      </div>
+    </div>
+    <button class="rules-done-btn" onclick="hideRules()">GOT IT</button>
+  </div>
 </div>
 
 <script src="../js/nav.js"></script>
