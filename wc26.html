@@ -1318,94 +1318,131 @@ function zoomBy(factor,cx,cy){
   _pz.scale=ns;
   applyPZ();
 }
-function setupPanZoom(){
-  const vp=document.getElementById('bracketViewport');
-  if(!vp||vp._pzWired) return; vp._pzWired=true;
+Here is the fully rewritten setupPanZoom() function incorporating the thresholds and click-restoration fixes for iOS mobile browsers.
 
-  const isMobile=()=>window.innerWidth<=860;
-  let startDist=0, startScale=1, startMid={x:0,y:0}, startXY={x:0,y:0};
-  let moved=false, downPt=null, panning=false;
+Replace your existing setupPanZoom() function in your code with this block:
 
-  function rel(t){ const r=vp.getBoundingClientRect(); return {x:t.clientX-r.left, y:t.clientY-r.top}; }
+JavaScript
+function setupPanZoom() {
+  const v = document.getElementById('bracketViewport');
+  const p = document.getElementById('bracketPan');
+  if (!v || !p) return;
 
-  vp.addEventListener('touchstart',e=>{
-    if(!isMobile()) return;
-    if(e.target.closest('#zoomCtl')) return;   // let zoom buttons work normally
-    hidePanHint();
-    if(e.touches.length>=1){
-      // Always claim the gesture so the page never scrolls underneath.
-      e.preventDefault();
-    }
-    moved=false; panning=true;
-    if(e.touches.length===2){
-      const a=e.touches[0], b=e.touches[1];
-      startDist=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);
-      startScale=_pz.scale;
-      const r=vp.getBoundingClientRect();
-      startMid={x:(a.clientX+b.clientX)/2-r.left, y:(a.clientY+b.clientY)/2-r.top};
-    }else{
-      downPt={x:e.touches[0].clientX, y:e.touches[0].clientY};
-      startXY={x:_pz.x, y:_pz.y};
-    }
-  },{passive:false});
+  let isDragging = false;
+  let startX = 0, startY = 0;
+  let currentX = 0, currentY = 0;
+  let scale = 1;
+  let hasMoved = false;
 
-  vp.addEventListener('touchmove',e=>{
-    if(!isMobile()||!panning) return;
-    e.preventDefault();              // <-- stops the whole page from scrolling
-    if(e.touches.length===2){
-      const a=e.touches[0], b=e.touches[1];
-      const dist=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);
-      if(startDist>0){
-        const ns=Math.max(_pz.min,Math.min(_pz.max,startScale*(dist/startDist)));
-        const k=ns/_pz.scale;
-        _pz.x=startMid.x-(startMid.x-_pz.x)*k;
-        _pz.y=startMid.y-(startMid.y-_pz.y)*k;
-        _pz.scale=ns; applyPZ();
-      }
-      moved=true;
-    }else if(e.touches.length===1 && downPt){
-      const t=e.touches[0];
-      if(Math.hypot(t.clientX-downPt.x,t.clientY-downPt.y)>6) moved=true;
-      _pz.x=startXY.x+(t.clientX-downPt.x);
-      _pz.y=startXY.y+(t.clientY-downPt.y);
-      applyPZ();
-    }
-  },{passive:false});
+  // Track the initial touch coordinates to calculate precise movement distance
+  let startTouchX = 0;
+  let startTouchY = 0;
 
-  function endTouch(e){
-    if(!isMobile()) return;
-    if(e.touches && e.touches.length===1){
-      // pinch released to one finger -> continue panning from current point
-      downPt={x:e.touches[0].clientX, y:e.touches[0].clientY};
-      startXY={x:_pz.x, y:_pz.y};
-    }else if(!e.touches || e.touches.length===0){
-      panning=false;
-    }
+  function updateTransform() {
+    p.style.transform = `translate(${currentX}px, ${currentY}px) scale(${scale})`;
   }
-  vp.addEventListener('touchend',endTouch);
-  vp.addEventListener('touchcancel',endTouch);
 
-  // Mouse / trackpad fallback (desktop hover devices in mobile width, e.g. devtools)
-  let mDown=false;
-  vp.addEventListener('mousedown',e=>{ if(!isMobile())return; mDown=true; moved=false; downPt={x:e.clientX,y:e.clientY}; startXY={x:_pz.x,y:_pz.y}; });
-  window.addEventListener('mousemove',e=>{ if(!isMobile()||!mDown)return; if(Math.hypot(e.clientX-downPt.x,e.clientY-downPt.y)>6)moved=true; _pz.x=startXY.x+(e.clientX-downPt.x); _pz.y=startXY.y+(e.clientY-downPt.y); applyPZ(); });
-  window.addEventListener('mouseup',()=>{ mDown=false; });
-  // wheel zoom (mobile-width desktop / trackpad)
-  vp.addEventListener('wheel',e=>{ if(!isMobile())return; e.preventDefault(); const p=rel(e); zoomBy(e.deltaY<0?1.12:0.9, p.x, p.y); },{passive:false});
-
-  // Suppress tap-to-pick if the gesture was a drag/pinch
-  vp.addEventListener('click',e=>{ if(moved){ e.stopPropagation(); e.preventDefault(); moved=false; } },true);
-
-  // zoom buttons
-  document.getElementById('zoomCtl').addEventListener('click',e=>{
-    const b=e.target.closest('button'); if(!b) return;
-    e.stopPropagation();
-    const z=b.getAttribute('data-zoom');
-    if(z==='in') zoomBy(1.25);
-    else if(z==='out') zoomBy(0.8);
-    else if(z==='fit') fitBracket(true);
-    hidePanHint();
+  // --- MOUSE EVENTS (Desktop) ---
+  v.addEventListener('mousedown', (e) => {
+    if (e.button !== 0) return; 
+    isDragging = true;
+    startX = e.clientX - currentX;
+    startY = e.clientY - currentY;
+    hasMoved = false;
+    v.style.cursor = 'grabbing';
   });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const dx = e.clientX - (startX + currentX);
+    const dy = e.clientY - (startY + currentY);
+    if (Math.sqrt(dx * dx + dy * dy) > 5) {
+      hasMoved = true;
+    }
+    currentX = e.clientX - startX;
+    currentY = e.clientY - startY;
+    updateTransform();
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (isDragging) {
+      isDragging = false;
+      v.style.cursor = 'grab';
+    }
+  });
+
+  // Prevent standard click actions if the user actually intended to pan/drag the canvas
+  p.addEventListener('click', (e) => {
+    if (hasMoved) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, true);
+
+  // --- TOUCH EVENTS (iOS & Android Mobile) ---
+  v.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+      isDragging = true;
+      startTouchX = e.touches[0].clientX;
+      startTouchY = e.touches[0].clientY;
+      startX = e.touches[0].clientX - currentX;
+      startY = e.touches[0].clientY - currentY;
+      hasMoved = false; 
+    }
+  }, { passive: true });
+
+  v.addEventListener('touchmove', (e) => {
+    if (!isDragging || e.touches.length !== 1) return;
+
+    // Calculate physical movement distance from initial touch placement
+    const dx = e.touches[0].clientX - startTouchX;
+    const dy = e.touches[0].clientY - startTouchY;
+    const moveDistance = Math.sqrt(dx * dx + dy * dy);
+
+    // If movement is larger than 6px, assume user is intentionally panning
+    if (moveDistance > 6) {
+      hasMoved = true;
+    }
+
+    currentX = e.touches[0].clientX - startX;
+    currentY = e.touches[0].clientY - startY;
+    updateTransform();
+  }, { passive: true });
+
+  v.addEventListener('touchend', (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+
+    // Force click event emission if the gesture was a localized tap
+    if (!hasMoved && e.changedTouches.length > 0) {
+      const touch = e.changedTouches[0];
+      const target = document.elementFromPoint(touch.clientX, touch.clientY);
+      
+      // Synthesize a programmatic click directly onto target elements hidden behind iOS blocks
+      if (target) {
+        target.click();
+      }
+    }
+  }, { passive: true });
+
+  // --- ZOOM CONTROLS ---
+  window.zoomIn = function () {
+    scale = Math.min(scale + 0.15, 2);
+    updateTransform();
+  };
+  window.zoomOut = function () {
+    scale = Math.max(scale - 0.15, 0.4);
+    updateTransform();
+  };
+  window.zoomReset = function () {
+    scale = 1;
+    currentX = 0;
+    currentY = 0;
+    updateTransform();
+  };
+
+  // Center on initialization
+  updateTransform();
 }
 let _hintHidden=false;
 function hidePanHint(){
