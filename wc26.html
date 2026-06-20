@@ -6,6 +6,7 @@
 <title>World Cup 2026 · Predictions</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
+  
   :root{
     /* ---- Brand accents (flat, from the 26 color system) ---- */
     --blue:#2b3bff;        /* electric blue */
@@ -306,6 +307,11 @@
       padding:6px 12px;border-radius:99px;border:1px solid var(--line);pointer-events:none;
       transition:opacity .4s;
     }
+  }
+  /* Fix for iOS Safari event delegation bug */
+  [data-act], [data-choose] {
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* Optional: Removes the default dark grey selection flash on iOS */
   }
 </style>
 </head>
