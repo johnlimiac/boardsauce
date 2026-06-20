@@ -1601,9 +1601,17 @@ function handleOptTap(e){
 }
 function wireBracketEvents(){
   const bw=document.getElementById('bwrap');
-  if(bw && !bw._wired){ bw.addEventListener('click',handleBracketTap); bw._wired=true; }
+  if(bw && !bw._wired){ 
+    bw.addEventListener('click',handleBracketTap); 
+    bw.onclick = function(){}; // <--- Add this line to force iOS click bubbling
+    bw._wired=true; 
+  }
   const opts=document.getElementById('opts');
-  if(opts && !opts._wired){ opts.addEventListener('click',handleOptTap); opts._wired=true; }
+  if(opts && !opts._wired){ 
+    opts.addEventListener('click',handleOptTap); 
+    opts.onclick = function(){}; // <--- Add this line to force iOS click bubbling
+    opts._wired=true; 
+  }
 }
 
 /* init */
