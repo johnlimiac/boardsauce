@@ -1310,121 +1310,128 @@ function zoomBy(factor,cx,cy){
   _pz.scale=ns;
   applyPZ();
 }
-function setupPanZoom(){
+function setupPanZoom() {
   const v = document.getElementById('bracketViewport');
   const p = document.getElementById('bracketPan');
-  if(!v || !p) return;
+  if (!v || !p) return;
 
-  // Transform states
-  let currentX = 0, currentY = 0;
+  // Unified matrix state
   let scale = 1;
+  let currentX = 0;
+  let currentY = 0;
 
   // Active gesture tracking states
+  let activePointers = [];
   let isDragging = false;
   let hasMoved = false;
-  
-  // Starting reference values for calculations
-  let startX = 0, startY = 0;
-  let startPhysX = 0, startPhysY = 0;
-  
-  // Multi-touch pinch zoom tracking state
-  let initialPinchDist = 0;
-  let initialScale = 1;
 
-  function updateTransform(){
+  // Initial calculation references
+  let startX = 0;
+  let startY = 0;
+  let startPhysX = 0;
+  let startPhysY = 0;
+  let startScale = 1;
+  let startPinchDist = 0;
+
+  // Refreshes element styling using unified states
+  function updateTransform() {
     p.style.transform = `translate(${currentX}px, ${currentY}px) scale(${scale})`;
   }
 
-  // --- MOUSE & DESKTOP DRAGGING ---
-  v.addEventListener('mousedown', (e) => {
-    if(e.button !== 0) return; // Only left click drags
+  // Geometrically handles center points for multi-touch inputs
+  function getPointerMetrics() {
+    if (activePointers.length === 0) return { x: 0, y: 0, dist: 0 };
+    if (activePointers.length === 1) {
+      return { x: activePointers[0].clientX, y: activePointers[0].clientY, dist: 0 };
+    }
+    const p1 = activePointers[0];
+    const p2 = activePointers[1];
+    const midX = (p1.clientX + p2.clientX) / 2;
+    const midY = (p1.clientY + p2.clientY) / 2;
+    const dx = p1.clientX - p2.clientX;
+    const dy = p1.clientY - p2.clientY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    return { x: midX, y: midY, dist: dist };
+  }
+
+  // Common anchor modifier used when triggering UI Zoom Buttons smoothly
+  function applyZoomAtPoint(targetScale, originX, originY) {
+    targetScale = Math.max(0.4, Math.min(2, targetScale));
+    currentX = originX - (originX - currentX) * (targetScale / scale);
+    currentY = originY - (originY - currentY) * (targetScale / scale);
+    scale = targetScale;
+    updateTransform();
+  }
+
+  // Capture gestures cleanly across standard pointers
+  v.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    
+    v.setPointerCapture(e.pointerId);
+    activePointers.push(e);
+
+    const metrics = getPointerMetrics();
+    startPhysX = metrics.x;
+    startPhysY = metrics.y;
+    startX = metrics.x - currentX;
+    startY = metrics.y - currentY;
+    
     isDragging = true;
     hasMoved = false;
-    startPhysX = e.clientX;
-    startPhysY = e.clientY;
-    startX = e.clientX - currentX;
-    startY = e.clientY - currentY;
+
+    if (activePointers.length === 2) {
+      startScale = scale;
+      startPinchDist = metrics.dist;
+    }
     v.style.cursor = 'grabbing';
   });
 
-  window.addEventListener('mousemove', (e) => {
-    if(!isDragging) return;
-    const dx = e.clientX - startPhysX;
-    const dy = e.clientY - startPhysY;
-    if(Math.sqrt(dx * dx + dy * dy) > 5) {
+  v.addEventListener('pointermove', (e) => {
+    const idx = activePointers.findIndex(p => p.pointerId === e.pointerId);
+    if (idx === -1) return;
+    activePointers[idx] = e; 
+
+    if (!isDragging) return;
+    const metrics = getPointerMetrics();
+    
+    // Prevent micromovement drift from canceling clicks
+    const distance = Math.sqrt(Math.pow(metrics.x - startPhysX, 2) + Math.pow(metrics.y - startPhysY, 2));
+    if (distance > 6 || activePointers.length > 1) {
       hasMoved = true;
     }
-    currentX = e.clientX - startX;
-    currentY = e.clientY - startY;
-    updateTransform();
+
+    if (activePointers.length === 1) {
+      // Smooth single finger / mouse panning
+      currentX = metrics.x - startX;
+      currentY = metrics.y - startY;
+      updateTransform();
+    } else if (activePointers.length === 2 && startPinchDist > 0) {
+      // Smooth Focal Multi-Touch Zooming
+      const factor = metrics.dist / startPinchDist;
+      applyZoomAtPoint(startScale * factor, metrics.x, metrics.y);
+
+      // Re-anchor to prevent alignment snapping feedback loops
+      startX = metrics.x - currentX;
+      startY = metrics.y - currentY;
+    }
   });
 
-  window.addEventListener('mouseup', () => {
-    if(isDragging) {
+  const handlePointerUp = (e) => {
+    const wasTouch = e.pointerType === 'touch';
+    activePointers = activePointers.filter(p => p.pointerId !== e.pointerId);
+    
+    if (activePointers.length < 2) {
+      startPinchDist = 0;
+    }
+
+    if (activePointers.length === 0) {
       isDragging = false;
       v.style.cursor = 'grab';
-    }
-  });
 
-  // --- MOBILE TOUCH DRAG & SMOOTH PINCH-ZOOM ---
-  v.addEventListener('touchstart', (e) => {
-    hasMoved = false;
-
-    if (e.touches.length === 1) {
-      // Single finger panning initialization
-      isDragging = true;
-      startPhysX = e.touches[0].clientX;
-      startPhysY = e.touches[0].clientY;
-      startX = e.touches[0].clientX - currentX;
-      startY = e.touches[0].clientY - currentY;
-    } else if (e.touches.length === 2) {
-      // Dual finger pinch zooming initialization
-      isDragging = false; // Kill drag immediately to prevent panning glitches during pinch
-      initialScale = scale;
-      const dx = e.touches[0].clientX - e.touches[1].clientX;
-      const dy = e.touches[0].clientY - e.touches[1].clientY;
-      initialPinchDist = Math.sqrt(dx * dx + dy * dy);
-    }
-  }, { passive: true });
-
-  v.addEventListener('touchmove', (e) => {
-    if (e.touches.length === 1 && isDragging) {
-      // Single finger movement calculations
-      const dx = e.touches[0].clientX - startPhysX;
-      const dy = e.touches[0].clientY - startPhysY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-
-      if (distance > 6) {
-        hasMoved = true;
-      }
-      currentX = e.touches[0].clientX - startX;
-      currentY = e.touches[0].clientY - startY;
-      updateTransform();
-    } else if (e.touches.length === 2) {
-      // Smooth Pinch-to-Zoom algorithm execution
-      hasMoved = true; // Mark as moved so a gesture lift doesn't tap items accidentally
-      const dx = e.touches[0].clientX - e.touches[1].clientX;
-      const dy = e.touches[0].clientY - e.touches[1].clientY;
-      const currentDist = Math.sqrt(dx * dx + dy * dy);
-
-      if (initialPinchDist > 0) {
-        const factor = currentDist / initialPinchDist;
-        scale = Math.max(0.4, Math.min(2, initialScale * factor));
-        updateTransform();
-      }
-    }
-  }, { passive: true });
-
-  v.addEventListener('touchend', (e) => {
-    // If it was a deliberate tap (no dragging, no pinching)
-    if (!hasMoved) {
-      isDragging = false;
-      if (e.changedTouches.length > 0) {
-        const touch = e.changedTouches[0];
-        const target = document.elementFromPoint(touch.clientX, touch.clientY);
-        
+      // iOS Fixed Click Execution 
+      if (!hasMoved && wasTouch) {
+        const target = document.elementFromPoint(e.clientX, e.clientY);
         if (target) {
-          // Fire a native bubbling click directly onto the bracket slot
           target.dispatchEvent(new MouseEvent('click', {
             bubbles: true,
             cancelable: true,
@@ -1432,37 +1439,41 @@ function setupPanZoom(){
           }));
         }
       }
+    } else {
+      // Smooth single finger transition baseline reset
+      const metrics = getPointerMetrics();
+      startX = metrics.x - currentX;
+      startY = metrics.y - currentY;
     }
-    isDragging = false;
-    initialPinchDist = 0;
-  }, { passive: true });
+  };
 
-  // Stop drag events from bleeding through to underlying clicks
+  v.addEventListener('pointerup', handlePointerUp);
+  v.addEventListener('pointercancel', handlePointerUp);
+
+  // Prevents canvas drag execution actions from leaking onto links/selections
   p.addEventListener('click', (e) => {
-    if(hasMoved){
+    if (hasMoved) {
       e.preventDefault();
       e.stopPropagation();
     }
   }, true);
 
-  // Button UI Fallbacks
-  window.zoomIn = function(){
-    scale = Math.min(scale + 0.15, 2);
-    updateTransform();
+  // --- Fixed Integrated Zoom Buttons UI Handlers ---
+  window.zoomIn = function() {
+    const rect = v.getBoundingClientRect();
+    applyZoomAtPoint(scale + 0.15, rect.left + rect.width / 2, rect.top + rect.height / 2);
   };
-  window.zoomOut = function(){
-    scale = Math.max(scale - 0.15, 0.4);
-    updateTransform();
+
+  window.zoomOut = function() {
+    const rect = v.getBoundingClientRect();
+    applyZoomAtPoint(scale - 0.15, rect.left + rect.width / 2, rect.top + rect.height / 2);
   };
-  window.zoomReset = function(){
+
+  window.zoomReset = function() {
     scale = 1;
     currentX = 0;
     currentY = 0;
-    updateTransform();
-  };
-
-  updateTransform();
-}
+    updateTransform
 let _hintHidden=false;
 function hidePanHint(){
   if(_hintHidden) return; _hintHidden=true;
