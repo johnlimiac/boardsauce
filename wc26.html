@@ -279,16 +279,24 @@
     nav.tabs button{flex:1}
     main{padding:16px 12px 80px}
     .page-head h2{font-size:20px}
+    
     /* Pinch/pan viewport instead of plain scroll */
     #bracketViewport{
-      overflow:hidden;touch-action:none;overscroll-behavior:contain;
-      -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
-      height:72vh;min-height:420px;
-      border:1px solid var(--line);border-radius:18px;
-      background:
-        var(--bg2);
+      overflow:hidden;
+      touch-action:manipulation; /* <-- CHANGE THIS FROM 'none' TO 'manipulation' */
+      overscroll-behavior:contain;
+      -webkit-user-select:none;
+      user-select:none;
+      -webkit-touch-callout:none;
+      height:72vh;
+      min-height:420px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background: var(--bg2);
     }
-    #bracketPan{touch-action:none}
+    
+    #bracketPan{touch-action:manipulation;} /* <-- CHANGE THIS FROM 'none' TO 'manipulation' AS WELL */
+    
     #captureRoot{border:0;border-radius:0;background:transparent}
     #zoomCtl{
       display:flex;flex-direction:column;gap:6px;
