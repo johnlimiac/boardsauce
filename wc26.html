@@ -309,9 +309,8 @@
     }
   }
   /* Fix for iOS Safari event delegation bug */
-  [data-act], [data-choose] {
-    cursor: pointer;
-    -webkit-tap-highlight-color: rgba(0,0,0,0); /* Optional: Removes the default dark grey selection flash on iOS */
+  [data-act] *, [data-choose] * {
+    pointer-events: none;
   }
 </style>
 </head>
