@@ -1321,7 +1321,6 @@ function setupPanZoom(){
   let scale = 1;
   let hasMoved = false;
 
-  // Track the absolute starting point of the tap/click to check movement distance
   let startPhysX = 0;
   let startPhysY = 0;
 
@@ -1329,9 +1328,7 @@ function setupPanZoom(){
     p.style.transform = `translate(${currentX}px, ${currentY}px) scale(${scale})`;
   }
 
-  // Handle all pointer inputs (Mice, Touchscreens, Styluses) flawlessly
   v.addEventListener('pointerdown', (e) => {
-    // If it's a mouse, only drag on left-click
     if(e.pointerType === 'mouse' && e.button !== 0) return;
     
     isDragging = true;
@@ -1346,13 +1343,12 @@ function setupPanZoom(){
   window.addEventListener('pointermove', (e) => {
     if(!isDragging) return;
 
-    // Calculate how many physical pixels the cursor/finger shifted from the start point
     const dx = e.clientX - startPhysX;
     const dy = e.clientY - startPhysY;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
-    // iPhone/iOS Saftey Check: If moved less than 6px, treat it as a pure tap, not a drag
-    if(distance > 6){
+    // If moved more than 5 physical pixels, it is officially a drag/pan action
+    if(distance > 5){
       hasMoved = true;
     }
 
@@ -1366,17 +1362,22 @@ function setupPanZoom(){
     isDragging = false;
     v.style.cursor = 'grab';
 
-    // iOS Restorational Fix: If a mobile screen was tapped without shifting position, 
-    // manually trigger the click on the exact underlying element.
+    // Bulletproof iOS Solution: If touch-action is none, iOS suppresses synthetic click events.
+    // If the user tapped without dragging, we manually dispatch the click event directly.
     if(!hasMoved && e.pointerType === 'touch') {
       const target = document.elementFromPoint(e.clientX, e.clientY);
       if(target) {
-        target.click();
+        // Dispatches a genuine native click cleanly to your handleBracketTap function
+        target.dispatchEvent(new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        }));
       }
     }
   });
 
-  // Block parent canvas panning conflicts on active selections
+  // Block dragging actions from interacting with underlying links/inputs
   p.addEventListener('click', (e) => {
     if(hasMoved){
       e.preventDefault();
@@ -1384,7 +1385,7 @@ function setupPanZoom(){
     }
   }, true);
 
-  // Zoom management
+  // Zoom methods
   window.zoomIn = function(){
     scale = Math.min(scale + 0.15, 2);
     updateTransform();
