@@ -3,318 +3,833 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FIFA World Cup 2026 - Premium Bracket</title>
+    <title>World Cup 2026 - Premium Bracket</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        /* Modern UI Variables */
         :root {
-            --bg-color: #F8FAFC;
-            --surface: #FFFFFF;
-            --text-main: #0F172A;
-            --text-muted: #64748B;
-            --border-light: #E2E8F0;
-            --line-color: #CBD5E1;
-            
-            /* WC 2026 Brand Palette */
-            --wc-purple: #6322E0;
-            --wc-green: #00DF5D;
-            --wc-teal: #00BAC6;
-            --wc-purple-light: #F3EFFF;
-
-            /* Bracket Geometry */
-            --bracket-height: 1300px;
-            --col-width: 190px;
-            --col-gap: 50px;
-            --slot-height: 34px;
-            --line-thickness: 2px;
+            --ink: #10172a;
+            --muted: #64748b;
+            --paper: #f8fbff;
+            --surface: rgba(255, 255, 255, 0.76);
+            --surface-strong: rgba(255, 255, 255, 0.92);
+            --line: rgba(122, 139, 170, 0.44);
+            --line-bright: #11d9c5;
+            --violet: #6423e7;
+            --indigo: #2338c7;
+            --pink: #ff4fb2;
+            --teal: #00c8d7;
+            --green: #2df26f;
+            --gold: #ffd86b;
+            --orange: #ff8f3d;
+            --shadow-soft: 0 18px 45px rgba(22, 28, 55, 0.12);
+            --shadow-card: 0 10px 28px rgba(24, 32, 63, 0.11);
+            --radius-xl: 8px;
+            --radius-lg: 8px;
+            --radius-md: 8px;
+            --focus: 0 0 0 4px rgba(0, 200, 215, 0.28);
+            --bracket-height: 1180px;
+            --col-width: 150px;
+            --col-gap: 32px;
+            --slot-height: 38px;
+            --line-thickness: 3px;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             overflow-x: hidden;
-            padding-bottom: 60px;
+            background:
+                radial-gradient(circle at 12% 16%, rgba(255, 79, 178, 0.20), transparent 26rem),
+                radial-gradient(circle at 85% 10%, rgba(45, 242, 111, 0.18), transparent 25rem),
+                radial-gradient(circle at 56% 62%, rgba(0, 200, 215, 0.16), transparent 29rem),
+                linear-gradient(180deg, #f9fbff 0%, #eef5ff 46%, #f8fbff 100%);
+            color: var(--ink);
+            font-family: "Manrope", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            padding-bottom: 54px;
         }
 
-        /* Premium Header Design */
-        header {
-            width: 100%;
-            background: linear-gradient(135deg, var(--wc-purple) 0%, #3B0794 100%);
-            padding: 40px 20px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(16, 23, 42, 0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 23, 42, 0.035) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent 78%);
         }
 
-        header h1 {
-            font-size: 2.2rem;
+        .page-shell {
+            position: relative;
+            width: min(100%, 1440px);
+            margin: 0 auto;
+        }
+
+        .hero {
+            position: relative;
+            isolation: isolate;
+            min-height: 340px;
+            overflow: hidden;
+            border-radius: 0 0 44px 44px;
+            background:
+                radial-gradient(circle at 18% 18%, rgba(255, 216, 107, 0.42), transparent 15rem),
+                radial-gradient(circle at 85% 26%, rgba(45, 242, 111, 0.34), transparent 18rem),
+                linear-gradient(135deg, #2b0f88 0%, #6130ec 42%, #007bd1 74%, #00c8d7 100%);
+            box-shadow: 0 30px 80px rgba(39, 21, 126, 0.28);
+            padding: 52px clamp(22px, 5vw, 76px) 76px;
+        }
+
+        .hero::before,
+        .hero::after {
+            content: "";
+            position: absolute;
+            border-radius: 999px;
+            opacity: 0.64;
+            z-index: -1;
+            transform: translateZ(0);
+            animation: floatShape 11s ease-in-out infinite;
+        }
+
+        .hero::before {
+            width: 220px;
+            height: 220px;
+            right: 11%;
+            top: 26px;
+            background: linear-gradient(135deg, rgba(255, 79, 178, 0.76), rgba(255, 216, 107, 0.78));
+            filter: blur(1px);
+        }
+
+        .hero::after {
+            width: 150px;
+            height: 150px;
+            left: 8%;
+            bottom: -36px;
+            background: linear-gradient(135deg, rgba(45, 242, 111, 0.62), rgba(0, 200, 215, 0.74));
+            animation-delay: -4s;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 190px;
+            align-items: center;
+            gap: clamp(24px, 6vw, 72px);
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            width: fit-content;
+            margin-bottom: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.16);
+            color: rgba(255, 255, 255, 0.88);
+            padding: 9px 14px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            backdrop-filter: blur(18px);
+        }
+
+        .eyebrow-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 20px rgba(45, 242, 111, 0.9);
+        }
+
+        h1 {
+            max-width: 850px;
+            color: #fff;
+            font-family: "Outfit", "Manrope", sans-serif;
+            font-size: clamp(3.1rem, 8vw, 6.8rem);
             font-weight: 900;
-            color: #FFFFFF;
-            letter-spacing: -0.5px;
+            line-height: 0.9;
+            letter-spacing: 0;
             text-transform: uppercase;
-            margin-bottom: 8px;
+            text-wrap: balance;
+            text-shadow: 0 18px 45px rgba(15, 23, 42, 0.24);
         }
 
-        header p {
-            color: var(--wc-teal);
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-        }
-
-        /* Modern Button */
-        .controls {
-            margin-bottom: 30px;
-            z-index: 10;
-        }
-
-        .save-btn {
-            background-color: var(--surface);
-            color: var(--wc-purple);
-            border: 2px solid var(--border-light);
-            padding: 12px 24px;
-            font-size: 1rem;
+        .subtitle {
+            max-width: 640px;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.82);
+            font-size: clamp(1rem, 2.2vw, 1.24rem);
             font-weight: 700;
-            border-radius: 8px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: all 0.2s ease;
+            line-height: 1.45;
+        }
+
+        .hero-trophy {
+            position: relative;
+            width: 168px;
+            height: 210px;
+            justify-self: center;
+            filter: drop-shadow(0 30px 42px rgba(0, 0, 0, 0.28));
+            animation: trophyFloat 4.8s ease-in-out infinite;
+        }
+
+        .hero-trophy::before {
+            content: "";
+            position: absolute;
+            left: 38px;
+            top: 18px;
+            width: 92px;
+            height: 104px;
+            border-radius: 22px 22px 46px 46px;
+            background:
+                radial-gradient(circle at 35% 26%, rgba(255, 255, 255, 0.95), transparent 0.28rem),
+                linear-gradient(135deg, #fff3a7 0%, #ffc24d 38%, #ff8f3d 72%, #f0b530 100%);
+            box-shadow: inset -14px -12px 22px rgba(159, 85, 0, 0.22), inset 12px 10px 18px rgba(255, 255, 255, 0.33);
+        }
+
+        .hero-trophy::after {
+            content: "";
+            position: absolute;
+            left: 54px;
+            top: 118px;
+            width: 60px;
+            height: 78px;
+            border-radius: 16px 16px 10px 10px;
+            background: linear-gradient(180deg, #ffd86b 0%, #ff9c3d 100%);
+            clip-path: polygon(30% 0, 70% 0, 82% 70%, 100% 70%, 100% 100%, 0 100%, 0 70%, 18% 70%);
+        }
+
+        .trophy-handle {
+            position: absolute;
+            top: 38px;
+            width: 48px;
+            height: 70px;
+            border: 12px solid rgba(255, 222, 103, 0.94);
+            border-radius: 999px;
+        }
+
+        .trophy-handle.left {
+            left: 10px;
+            border-right: 0;
+        }
+
+        .trophy-handle.right {
+            right: 10px;
+            border-left: 0;
+        }
+
+        .content-panel {
+            position: relative;
+            z-index: 2;
+            margin: -36px 0 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.40), rgba(255, 255, 255, 0));
+        }
+
+        .toolbar {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin: 0 clamp(12px, 3vw, 34px);
+            padding: 18px clamp(16px, 3vw, 28px);
+            border: 1px solid rgba(255, 255, 255, 0.70);
+            border-radius: var(--radius-xl);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.52));
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(26px);
+        }
+
+        .toolbar-copy {
+            min-width: 0;
+        }
+
+        .toolbar-title {
+            font-family: "Outfit", "Manrope", sans-serif;
+            font-size: clamp(1.08rem, 2vw, 1.45rem);
+            font-weight: 800;
+            color: var(--ink);
+        }
+
+        .toolbar-subtitle {
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 0.88rem;
+            font-weight: 700;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .export-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             gap: 8px;
+            min-height: 42px;
+            border: 1px solid rgba(255, 255, 255, 0.72);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.78);
+            color: #261257;
+            padding: 10px 15px;
+            font: inherit;
+            font-size: 0.88rem;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 10px 26px rgba(45, 59, 107, 0.10);
+            transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
         }
 
-        .save-btn:hover {
-            border-color: var(--wc-purple);
-            box-shadow: 0 6px 12px rgba(99, 34, 224, 0.15);
+        .export-btn svg {
+            width: 18px;
+            height: 18px;
+            flex: 0 0 auto;
+        }
+
+        .export-btn:hover {
             transform: translateY(-2px);
+            background: #fff;
+            box-shadow: 0 16px 34px rgba(45, 59, 107, 0.16);
         }
 
-        .save-btn:active {
+        .export-btn:active {
             transform: translateY(0);
         }
 
-        /* Viewport & Grid */
+        .export-btn:focus-visible,
+        .team-slot:focus-visible {
+            outline: none;
+            box-shadow: var(--focus), var(--shadow-card);
+        }
+
+        .share-btn {
+            display: none;
+            background: linear-gradient(135deg, var(--violet), var(--teal));
+            color: #fff;
+        }
+
         .bracket-viewport {
             width: 100%;
             overflow-x: auto;
-            padding: 20px 40px;
-            /* Smooth scrolling for touch */
-            -webkit-overflow-scrolling: touch; 
+            overflow-y: hidden;
+            padding: 42px clamp(16px, 4vw, 42px) 34px;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-x: contain;
+            scroll-snap-type: x proximity;
+            scrollbar-width: none;
+        }
+
+        .bracket-viewport::-webkit-scrollbar {
+            display: none;
         }
 
         #bracket-area {
             display: flex;
             gap: var(--col-gap);
-            background-color: transparent;
+            width: max-content;
             min-width: max-content;
             margin: 0 auto;
-            padding-top: 30px;
+            padding: 44px 20px 20px;
+            background:
+                linear-gradient(135deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.16)),
+                radial-gradient(circle at 38% 0%, rgba(0, 200, 215, 0.12), transparent 28rem);
+            border-radius: var(--radius-xl);
         }
 
         .column {
-            height: var(--bracket-height);
-            width: var(--col-width);
+            position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            position: relative;
+            width: var(--col-width);
+            height: var(--bracket-height);
+            scroll-snap-align: start;
         }
 
-        /* Refined Headers */
         .col-header {
             position: absolute;
-            top: -35px;
+            top: -43px;
+            left: 0;
             width: 100%;
+            color: #475569;
+            font-family: "Outfit", "Manrope", sans-serif;
+            font-size: 0.72rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
             text-align: center;
-            font-size: 0.85rem;
-            font-weight: 700;
             text-transform: uppercase;
-            color: var(--text-muted);
-            letter-spacing: 1px;
         }
 
-        /* Elegant Team Slots */
         .team-slot {
-            height: var(--slot-height);
-            background-color: var(--surface);
-            border: 1px solid var(--border-light);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            padding: 0 12px;
-            cursor: pointer;
-            user-select: none;
             position: relative;
             z-index: 5;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            height: var(--slot-height);
+            border: 1px solid rgba(255, 255, 255, 0.78);
+            border-radius: var(--radius-md);
+            background: var(--surface-strong);
+            box-shadow: 0 8px 18px rgba(23, 31, 64, 0.08);
+            color: var(--ink);
+            cursor: pointer;
+            overflow: visible;
+            padding: 0 10px;
+            user-select: none;
+            backdrop-filter: blur(16px);
+            transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
         }
-        
+
         .team-slot:not(.empty):hover {
-            border-color: var(--wc-teal);
-            box-shadow: 0 4px 10px rgba(0, 186, 198, 0.15);
-            transform: scale(1.02);
-            z-index: 10;
+            transform: translateY(-2px) scale(1.018);
+            border-color: rgba(0, 200, 215, 0.72);
+            box-shadow: 0 16px 34px rgba(0, 116, 166, 0.16);
+            z-index: 12;
         }
 
         .team-info {
+            position: relative;
+            z-index: 3;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            gap: 8px;
             width: 100%;
+            min-width: 0;
+            font-size: 0.78rem;
+            font-weight: 850;
+            line-height: 1;
             white-space: nowrap;
+        }
+
+        .flag {
+            display: grid;
+            place-items: center;
+            width: 22px;
+            height: 22px;
+            flex: 0 0 22px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.88);
+            font-size: 1rem;
+            box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.05);
+        }
+
+        .team-name {
+            min-width: 0;
             overflow: hidden;
+            color: var(--ink);
+            text-overflow: ellipsis;
         }
 
-        .flag { font-size: 1.1rem; flex-shrink: 0; }
-        .team-name { overflow: hidden; text-overflow: ellipsis; color: var(--text-main); }
-
-        /* States */
         .team-slot.empty {
-            border: 1px dashed var(--line-color);
-            background-color: transparent;
+            border: 1px dashed rgba(100, 116, 139, 0.38);
+            background: rgba(255, 255, 255, 0.36);
             box-shadow: none;
+            cursor: default;
         }
-        
-        .team-slot.empty .team-name { 
-            color: var(--text-muted); 
-            font-weight: 400;
+
+        .team-slot.empty .flag {
+            display: none;
         }
-        
-        /* Advanced state adds a subtle WC26 Green accent */
+
+        .team-slot.empty .team-name {
+            color: rgba(71, 85, 105, 0.58);
+            font-weight: 800;
+        }
+
         .team-slot.advanced {
-            border-left: 4px solid var(--wc-green);
-            background-color: #FAFAFA;
+            border-color: rgba(255, 255, 255, 0.92);
+            background:
+                linear-gradient(135deg, rgba(45, 242, 111, 0.95), rgba(0, 200, 215, 0.88) 52%, rgba(100, 35, 231, 0.86));
+            box-shadow: 0 15px 34px rgba(0, 200, 215, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.46);
         }
 
-        /* Champion Slot */
+        .team-slot.advanced .team-name {
+            color: #fff;
+            text-shadow: 0 1px 8px rgba(15, 23, 42, 0.26);
+        }
+
+        .team-slot.advanced .flag {
+            background: rgba(255, 255, 255, 0.98);
+        }
+
+        .col-winner {
+            width: 174px;
+        }
+
         .col-winner .team-slot {
-            height: 48px;
-            border: 2px solid var(--wc-purple);
-            background-color: var(--wc-purple-light);
-            box-shadow: 0 4px 12px rgba(99, 34, 224, 0.15);
+            height: 74px;
+            border: 1px solid rgba(255, 255, 255, 0.84);
+            border-radius: var(--radius-md);
+            background:
+                radial-gradient(circle at 22% 16%, rgba(255, 255, 255, 0.85), transparent 2rem),
+                linear-gradient(135deg, #fff3a7 0%, #ffd86b 35%, #ff9b3d 72%, #f25a74 100%);
+            box-shadow: 0 22px 52px rgba(255, 151, 61, 0.36), 0 0 42px rgba(255, 216, 107, 0.26);
+            padding: 0 14px;
         }
-        
+
+        .col-winner .team-info {
+            font-size: 0.95rem;
+        }
+
+        .col-winner .flag {
+            width: 30px;
+            height: 30px;
+            flex-basis: 30px;
+            font-size: 1.22rem;
+        }
+
         .col-winner .team-slot.empty {
-            border: 2px dashed var(--wc-purple);
-            background-color: transparent;
-            box-shadow: none;
+            background: rgba(255, 255, 255, 0.38);
+            border: 1px dashed rgba(255, 143, 61, 0.72);
+            box-shadow: 0 16px 34px rgba(255, 143, 61, 0.12);
         }
 
-        .champion-emoji {
+        .champion-trophy {
             position: absolute;
-            top: -65px;
+            top: calc(50% - 92px);
             left: 50%;
+            width: 54px;
+            height: 66px;
             transform: translateX(-50%);
-            font-size: 2.2rem;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+            filter: drop-shadow(0 12px 20px rgba(255, 143, 61, 0.32));
+            pointer-events: none;
         }
 
-        /* Clean, thin mathematical connecting lines 
-        */
-        .column:not(.col-winner) .team-slot::after {
-            content: '';
+        .champion-trophy::before {
+            content: "";
             position: absolute;
-            right: calc(var(--col-gap) / -2);
+            left: 14px;
+            top: 0;
+            width: 26px;
+            height: 34px;
+            border-radius: 8px 8px 15px 15px;
+            background: linear-gradient(135deg, #fff3a7, #ffbe42 48%, #ff8f3d);
+        }
+
+        .champion-trophy::after {
+            content: "";
+            position: absolute;
+            left: 20px;
+            bottom: 0;
+            width: 14px;
+            height: 32px;
+            border-radius: 6px 6px 3px 3px;
+            background: linear-gradient(180deg, #ffd86b, #ff8f3d);
+            box-shadow: 0 24px 0 10px #ffb84f;
+            clip-path: polygon(20% 0, 80% 0, 88% 70%, 100% 70%, 100% 100%, 0 100%, 0 70%, 12% 70%);
+        }
+
+        .col-winner.has-champion .champion-trophy {
+            animation: championPop 820ms cubic-bezier(0.2, 0.82, 0.2, 1.16);
+        }
+
+        .col-winner.has-champion .team-slot {
+            animation: championGlow 1.8s ease-in-out infinite alternate;
+        }
+
+        .column:not(.col-winner) .team-slot::after,
+        .column:not(.col-r32) .team-slot::before {
+            content: "";
+            position: absolute;
             top: 50%;
-            transform: translateY(-50%);
             width: calc(var(--col-gap) / 2);
             height: var(--line-thickness);
-            background: var(--line-color);
+            transform: translateY(-50%);
+            background: linear-gradient(90deg, var(--pink), var(--teal), var(--green));
+            opacity: 0.7;
             z-index: 1;
+        }
+
+        .column:not(.col-winner) .team-slot::after {
+            right: calc(var(--col-gap) / -2);
         }
 
         .column:not(.col-r32) .team-slot::before {
-            content: '';
-            position: absolute;
             left: calc(var(--col-gap) / -2);
-            top: 50%;
-            transform: translateY(-50%);
-            width: calc(var(--col-gap) / 2);
-            height: var(--line-thickness);
-            background: var(--line-color);
-            z-index: 1;
         }
 
         .vertical-line {
             position: absolute;
             left: calc(var(--col-gap) / -2);
-            height: calc(var(--bracket-height) / var(--prev-nodes));
             top: calc(50% - (var(--bracket-height) / var(--prev-nodes) / 2));
             width: var(--line-thickness);
-            background: var(--line-color);
+            height: calc(var(--bracket-height) / var(--prev-nodes));
+            border-radius: 999px;
+            background: linear-gradient(180deg, var(--pink), var(--teal), var(--green));
+            opacity: 0.58;
             z-index: 1;
         }
 
-        /* PRINT STYLES FOR PDF EXPORT 
-           Strips UI chrome, ensures pure white background, scales to fit
-        */
-        @media print {
-            @page {
-                size: landscape;
-                margin: 10mm;
+        .exporting .team-slot {
+            backdrop-filter: none;
+        }
+
+        .exporting .content-panel,
+        .exporting #bracket-area {
+            background: #f8fbff;
+        }
+
+        @keyframes floatShape {
+            0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+            50% { transform: translate3d(14px, -18px, 0) scale(1.05); }
+        }
+
+        @keyframes trophyFloat {
+            0%, 100% { transform: translate3d(0, 0, 0) rotate(-2deg); }
+            50% { transform: translate3d(0, -14px, 0) rotate(2deg); }
+        }
+
+        @keyframes championPop {
+            0% { transform: translateX(-50%) scale(0.7) rotate(-12deg); opacity: 0; }
+            60% { transform: translateX(-50%) scale(1.15) rotate(6deg); opacity: 1; }
+            100% { transform: translateX(-50%) scale(1) rotate(0); opacity: 1; }
+        }
+
+        @keyframes championGlow {
+            from { box-shadow: 0 22px 52px rgba(255, 151, 61, 0.34), 0 0 38px rgba(255, 216, 107, 0.22); }
+            to { box-shadow: 0 26px 62px rgba(255, 151, 61, 0.45), 0 0 58px rgba(255, 216, 107, 0.44); }
+        }
+
+        @media (max-width: 900px) {
+            :root {
+                --col-width: 142px;
+                --col-gap: 28px;
+                --bracket-height: 1090px;
+                --slot-height: 36px;
             }
+
+            .hero {
+                min-height: 310px;
+                padding-bottom: 66px;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr 118px;
+                gap: 18px;
+            }
+
+            .hero-trophy {
+                width: 118px;
+                height: 150px;
+            }
+
+            .hero-trophy::before {
+                left: 27px;
+                width: 64px;
+                height: 78px;
+            }
+
+            .hero-trophy::after {
+                left: 39px;
+                top: 88px;
+                width: 42px;
+                height: 55px;
+            }
+
+            .trophy-handle {
+                top: 33px;
+                width: 34px;
+                height: 48px;
+                border-width: 8px;
+            }
+
+            .toolbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .controls {
+                justify-content: flex-start;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 720px) {
             body {
-                background-color: white;
-                padding: 0;
+                padding-bottom: 28px;
             }
-            header, .controls {
-                display: none !important;
+
+            .hero {
+                min-height: 300px;
+                border-radius: 0 0 30px 30px;
+                padding-top: 36px;
             }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-trophy {
+                position: absolute;
+                right: 18px;
+                bottom: 24px;
+                width: 92px;
+                height: 116px;
+                opacity: 0.88;
+            }
+
+            .subtitle {
+                max-width: calc(100% - 72px);
+            }
+
+            .content-panel {
+                margin-inline: 8px;
+            }
+
+            .toolbar {
+                margin-inline: 0;
+                padding: 16px;
+            }
+
+            .share-btn {
+                display: inline-flex;
+            }
+
             .bracket-viewport {
-                overflow: visible;
-                padding: 0;
+                padding: 34px 12px 26px;
+                scroll-padding-left: 12px;
             }
+
             #bracket-area {
-                transform: scale(0.75); /* Shrinks slightly to fit standard paper */
-                transform-origin: top left;
-                padding-top: 40px;
+                margin: 0;
+                padding-inline: 14px;
             }
-            .team-slot {
-                border-color: #94A3B8; /* Darker border for print contrast */
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
+        }
+
+        @media (max-width: 520px) {
+            :root {
+                --col-width: 132px;
+                --col-gap: 24px;
+                --bracket-height: 1000px;
+                --slot-height: 35px;
+            }
+
+            h1 {
+                font-size: clamp(2.8rem, 17vw, 4.4rem);
+            }
+
+            .eyebrow {
+                font-size: 0.7rem;
+            }
+
+            .subtitle {
+                font-size: 0.96rem;
+            }
+
+            .controls {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .export-btn {
+                min-width: 0;
+                padding-inline: 10px;
+                font-size: 0.78rem;
+            }
+
+            .team-info {
+                gap: 7px;
+                font-size: 0.73rem;
+            }
+
+            .flag {
+                width: 20px;
+                height: 20px;
+                flex-basis: 20px;
+                font-size: 0.92rem;
+            }
+
+            .col-winner {
+                width: 150px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
             }
         }
     </style>
 </head>
 <body>
-
-    <header>
-        <h1>World Cup 2026</h1>
-        <p>Knockout Stage Predictor</p>
-    </header>
-
-    <div class="controls">
-        <button class="save-btn" onclick="window.print()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-            </svg>
-            Save as PDF
-        </button>
-    </div>
-
-    <div class="bracket-viewport">
-        <div id="bracket-area">
+    <main class="page-shell">
+        <header class="hero">
+            <div class="hero-grid">
+                <div>
+                    <div class="eyebrow"><span class="eyebrow-dot"></span> Knockout Stage Predictor</div>
+                    <h1>World Cup 2026</h1>
+                    <p class="subtitle">Build your path from the Round of 32 to a glowing champion bracket.</p>
+                </div>
+                <div class="hero-trophy" aria-hidden="true">
+                    <span class="trophy-handle left"></span>
+                    <span class="trophy-handle right"></span>
+                </div>
             </div>
-    </div>
+        </header>
+
+        <section class="content-panel" aria-label="World Cup bracket builder">
+            <div class="toolbar">
+                <div class="toolbar-copy">
+                    <div class="toolbar-title">Interactive Bracket</div>
+                    <div class="toolbar-subtitle">Selections save automatically on this device.</div>
+                </div>
+                <div class="controls" aria-label="Export bracket">
+                    <button class="export-btn" id="save-png" type="button" aria-label="Save bracket as PNG">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <path d="M7 10l5 5 5-5"></path>
+                            <path d="M12 15V3"></path>
+                        </svg>
+                        PNG
+                    </button>
+                    <button class="export-btn" id="save-jpg" type="button" aria-label="Save bracket as JPG">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"></path>
+                            <path d="M14 2v6h6"></path>
+                            <path d="M8 13h8"></path>
+                            <path d="M8 17h5"></path>
+                        </svg>
+                        JPG
+                    </button>
+                    <button class="export-btn share-btn" id="share-bracket" type="button" aria-label="Share bracket image">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <path d="M8.59 13.51l6.83 3.98"></path>
+                            <path d="M15.41 6.51L8.59 10.49"></path>
+                        </svg>
+                        Share
+                    </button>
+                </div>
+            </div>
+
+            <div class="bracket-viewport" aria-label="Scrollable tournament bracket">
+                <div id="bracket-area"></div>
+            </div>
+        </section>
+    </main>
 
     <script>
         // Data and State
@@ -340,6 +855,7 @@
         const rounds = ['r32', 'r16', 'qf', 'sf', 'final', 'winner'];
         const limits = { r32: 32, r16: 16, qf: 8, sf: 4, final: 2, winner: 1 };
         const displayNames = { r32: 'Round of 32', r16: 'Round of 16', qf: 'Quarter-Finals', sf: 'Semi-Finals', final: 'Final', winner: '2026 Champion' };
+        const STORAGE_KEY = 'world-cup-2026-premium-bracket';
 
         const state = {
             r32: [...initialTeams],
@@ -351,6 +867,29 @@
         };
 
         const DOMRegistry = {};
+
+        function restoreStateFromStorage() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+                if (!saved) return;
+
+                rounds.forEach(round => {
+                    if (!Array.isArray(saved[round]) || saved[round].length !== limits[round]) return;
+                    if (round === 'r32') return;
+                    state[round] = saved[round].map(team => team && team.name ? { name: team.name, flag: team.flag || '' } : null);
+                });
+            } catch (error) {
+                localStorage.removeItem(STORAGE_KEY);
+            }
+        }
+
+        function saveStateToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            } catch (error) {
+                // Saving is a convenience feature; bracket interaction should keep working without it.
+            }
+        }
 
         // DOM Construction
         function buildDOMNodes() {
@@ -367,8 +906,8 @@
 
                 if (round === 'winner') {
                     const trophy = document.createElement('div');
-                    trophy.className = 'champion-emoji';
-                    trophy.innerText = '🏆';
+                    trophy.className = 'champion-trophy';
+                    trophy.setAttribute('aria-hidden', 'true');
                     col.appendChild(trophy);
                 }
 
@@ -378,6 +917,8 @@
                 for (let i = 0; i < numSlots; i++) {
                     const slot = document.createElement('div');
                     slot.className = 'team-slot empty';
+                    slot.setAttribute('role', 'button');
+                    slot.setAttribute('tabindex', '0');
                     
                     if (prevNodesCount > 0) {
                         slot.style.setProperty('--prev-nodes', prevNodesCount);
@@ -392,6 +933,12 @@
                     slot.appendChild(info);
 
                     slot.addEventListener('click', () => handleSlotClick(round, i));
+                    slot.addEventListener('keydown', event => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            handleSlotClick(round, i);
+                        }
+                    });
                     col.appendChild(slot);
                     DOMRegistry[`${round}-${i}`] = slot;
                 }
@@ -449,23 +996,101 @@
                         el.classList.remove('empty');
                         flagSpan.innerText = team.flag;
                         nameSpan.innerText = team.name;
+                        el.setAttribute('aria-label', `${team.name}, ${displayNames[round]}. Select to advance or clear.`);
 
                         if (isAdvanced(round, team.name)) {
                             el.classList.add('advanced');
+                            el.setAttribute('aria-pressed', 'true');
                         } else {
                             el.classList.remove('advanced');
+                            el.setAttribute('aria-pressed', 'false');
                         }
                     } else {
                         el.classList.add('empty');
                         el.classList.remove('advanced');
+                        el.setAttribute('aria-pressed', 'false');
+                        el.setAttribute('aria-label', `${round === 'winner' ? 'Winner' : 'TBD'}, ${displayNames[round]}`);
                         flagSpan.innerText = '';
                         nameSpan.innerText = (round === 'winner') ? 'Winner' : 'TBD';
                     }
                 });
             });
+
+            const winnerColumn = document.querySelector('.col-winner');
+            if (winnerColumn) {
+                winnerColumn.classList.toggle('has-champion', Boolean(state.winner[0]));
+            }
+
+            saveStateToStorage();
         }
 
+        function downloadBlob(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
+        }
+
+        function canvasToBlob(canvas, type, quality) {
+            return new Promise(resolve => canvas.toBlob(resolve, type, quality));
+        }
+
+        async function captureBracketCanvas() {
+            const element = document.getElementById('bracket-area');
+            document.body.classList.add('exporting');
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            try {
+                return await html2canvas(element, {
+                    backgroundColor: '#f8fbff',
+                    scale: 3,
+                    useCORS: true,
+                    width: element.scrollWidth,
+                    height: element.scrollHeight,
+                    windowWidth: element.scrollWidth,
+                    windowHeight: element.scrollHeight
+                });
+            } finally {
+                document.body.classList.remove('exporting');
+            }
+        }
+
+        async function exportBracket(format = 'png') {
+            const canvas = await captureBracketCanvas();
+            const isJpg = format === 'jpg';
+            const mime = isJpg ? 'image/jpeg' : 'image/png';
+            const filename = `world-cup-2026-bracket.${isJpg ? 'jpg' : 'png'}`;
+            const blob = await canvasToBlob(canvas, mime, isJpg ? 0.9 : undefined);
+            if (blob) downloadBlob(blob, filename);
+        }
+
+        async function shareBracket() {
+            const canvas = await captureBracketCanvas();
+            const blob = await canvasToBlob(canvas, 'image/png');
+            if (!blob) return;
+
+            const file = new File([blob], 'world-cup-2026-bracket.png', { type: 'image/png' });
+            if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
+                await navigator.share({
+                    title: 'World Cup 2026 Bracket',
+                    text: 'My World Cup 2026 knockout bracket',
+                    files: [file]
+                });
+            } else {
+                downloadBlob(blob, 'world-cup-2026-bracket.png');
+            }
+        }
+
+        document.getElementById('save-png').addEventListener('click', () => exportBracket('png'));
+        document.getElementById('save-jpg').addEventListener('click', () => exportBracket('jpg'));
+        document.getElementById('share-bracket').addEventListener('click', () => shareBracket().catch(() => exportBracket('png')));
+
         // Initialize
+        restoreStateFromStorage();
         buildDOMNodes();
         syncStateToUI();
     </script>
