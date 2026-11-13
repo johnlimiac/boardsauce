@@ -6,18 +6,21 @@
   <title>Farkle — Board Sauce</title>
 
 <!-- iOS icon for homescreen -->
-  <link rel="apple-touch-icon" href="icon-512.jpg">
-  <meta name="apple-mobile-web-app-title" content="BoardSauce by John L">
+  <link rel="apple-touch-icon" href="../icon-512.png">
+  <link rel="icon" type="image/png" href="../icon-512.png">
+  <meta name="apple-mobile-web-app-title" content="Board Sauce">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#01010D">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../css/styles.css">
-  <link rel="stylesheet" href="../css/nav.css">
-  <link rel="stylesheet" href="../css/farkle.css">
+  <link rel="stylesheet" href="../css/brand.css?v=2">
+  <link rel="stylesheet" href="../css/styles.css?v=2">
+  <link rel="stylesheet" href="../css/nav.css?v=2">
+  <link rel="stylesheet" href="../css/farkle.css?v=2">
 </head>
 <body>
 
@@ -31,13 +34,12 @@
       <a href="farkle.html" class="active" aria-current="page">Farkle</a>
     </div>
     <button class="tl-hamburger" onclick="toggleNav()" aria-label="Toggle navigation menu" aria-expanded="false">
-      <svg class="tl-icon-open" width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
-        <rect width="20" height="2" rx="1" fill="currentColor"/>
-        <rect y="6" width="20" height="2" rx="1" fill="currentColor"/>
-        <rect y="12" width="20" height="2" rx="1" fill="currentColor"/>
+      <svg class="tl-icon-open" width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true">
+        <rect width="18" height="1.6" rx="0.8" fill="currentColor"/>
+        <rect y="8.4" width="12" height="1.6" rx="0.8" fill="currentColor"/>
       </svg>
-      <svg class="tl-icon-close" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-        <path d="M1 1l14 14M15 1L1 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <svg class="tl-icon-close" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M1 1l14 14M15 1L1 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
       </svg>
     </button>
   </div>
@@ -56,20 +58,9 @@
 
   <div class="setup-body">
 
-    <div class="setup-dice-icon" aria-hidden="true">
-      <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="4" y="4" width="64" height="64" rx="14" fill="#1a1924" stroke="#f97316" stroke-width="3"/>
-        <circle cx="20" cy="20" r="5" fill="#f97316"/>
-        <circle cx="52" cy="20" r="5" fill="#f97316"/>
-        <circle cx="20" cy="36" r="5" fill="#f97316"/>
-        <circle cx="52" cy="36" r="5" fill="#f97316"/>
-        <circle cx="20" cy="52" r="5" fill="#f97316"/>
-        <circle cx="52" cy="52" r="5" fill="#f97316"/>
-      </svg>
-    </div>
-
-    <h1 class="setup-title">Farkle</h1>
-    <p class="setup-sub">High Stakes. No Limits.</p>
+    <p class="label setup-label">Score tracker · First to 10K</p>
+    <h1 class="setup-title">Farkle<span class="dot">.</span></h1>
+    <p class="setup-sub">High stakes, no limits. Push your luck.</p>
 
     <p class="setup-section-label">Players</p>
 
@@ -83,11 +74,11 @@
       </div>
     </div>
 
-    <button class="add-player-btn" onclick="addPlayer()">+ Add Another Player</button>
+    <button class="add-player-btn" onclick="addPlayer()">+ Add another player</button>
 
     <div class="setup-actions">
-      <button class="fk-start-btn" onclick="startGame()">START GAME</button>
-      <button class="fk-rules-btn" onclick="showRules()">HOW TO PLAY</button>
+      <button class="fk-start-btn" onclick="startGame()">Start game</button>
+      <button class="fk-rules-btn" onclick="showRules()">How to play</button>
     </div>
 
   </div>
@@ -101,7 +92,7 @@
   <!-- Pill bar -->
   <div class="fk-pill-bar">
     <button class="fk-pill" onclick="goHome()" aria-label="Back to game setup">← Game Modes</button>
-    <h2 id="mode-title-fk">FARKLE</h2>
+    <h2 id="mode-title-fk">Farkle</h2>
     <div class="fk-pill-right">
       <button class="fk-pill fk-pill-rules" onclick="showRules()" aria-label="How to play">Rules</button>
       <button class="fk-pill fk-pill-danger" onclick="newGame()" aria-label="Start new game">New Game</button>
@@ -119,7 +110,7 @@
       <div class="fk-turn-label">Now Playing</div>
       <div id="fk-player-name">—</div>
       <div class="fk-dice-row">
-        <span class="fk-dice-label">🎲 ×</span>
+        <span class="fk-dice-label">Dice</span>
         <span id="fk-dice-count">6</span>
         <span class="fk-dice-label">dice left</span>
       </div>
@@ -131,7 +122,7 @@
   </div>
 
   <!-- Final round notice -->
-  <div id="fk-final-notice">⚠️ Final Round — All players get one last turn!</div>
+  <div id="fk-final-notice">Final round — everyone gets one last turn</div>
 
   <!-- Scoring grid -->
   <div class="fk-scoring-area" role="region" aria-label="Scoring options">
@@ -141,12 +132,12 @@
       <div class="fk-section-label">Singles</div>
       <div class="fk-singles-row">
         <button id="combo-s1" class="fk-score-btn fk-single" onclick="score('s1')" aria-label="Score single 1 for 100 points">
-          <span class="fk-btn-die">①</span>
+          <span class="fk-btn-die die-icon die-1" aria-hidden="true"><span></span></span>
           <span class="fk-btn-pts">100</span>
           <span class="fk-btn-sub">pts each</span>
         </button>
         <button id="combo-s5" class="fk-score-btn fk-single" onclick="score('s5')" aria-label="Score single 5 for 50 points">
-          <span class="fk-btn-die">⑤</span>
+          <span class="fk-btn-die die-icon die-5" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>
           <span class="fk-btn-pts">50</span>
           <span class="fk-btn-sub">pts each</span>
         </button>
@@ -229,8 +220,8 @@
 
   <!-- Action buttons -->
   <div class="fk-actions">
-    <button id="fk-bank-btn" onclick="bank()" aria-label="Bank points">BANK</button>
-    <button id="fk-farkle-btn" onclick="farkle()" aria-label="Farkle — lose turn">💥 FARKLE!</button>
+    <button id="fk-bank-btn" onclick="bank()" aria-label="Bank points">Bank</button>
+    <button id="fk-farkle-btn" onclick="farkle()" aria-label="Farkle — lose turn">Farkle!</button>
   </div>
 
 </div>
@@ -240,8 +231,8 @@
 
 <!-- Hot Dice overlay -->
 <div id="hot-dice-overlay" aria-hidden="true">
-  <div class="hot-dice-emoji">🎲</div>
-  <div class="hot-dice-text">HOT DICE!</div>
+  <div class="hot-dice-emoji"></div>
+  <div class="hot-dice-text">Hot dice!</div>
   <div class="hot-dice-sub">Roll all 6 — keep going!</div>
 </div>
 
@@ -267,12 +258,12 @@
       </div>
 
       <div class="rules-section">
-        <h3>Farkle! 💥</h3>
+        <h3>Farkle!</h3>
         <p>If you roll and get <strong>zero</strong> scoring dice, you Farkle. You lose all points gathered during that turn and it's the next player's turn.</p>
       </div>
 
       <div class="rules-section">
-        <h3>Hot Dice 🎲</h3>
+        <h3>Hot Dice</h3>
         <p>If you use all 6 dice to score, you have "Hot Dice"! You can pick up all 6 dice and keep rolling to continue your turn.</p>
       </div>
 
@@ -306,7 +297,7 @@
         </div>
       </div>
     </div>
-    <button class="rules-done-btn" onclick="hideRules()">GOT IT</button>
+    <button class="rules-done-btn" onclick="hideRules()">Got it</button>
   </div>
 </div>
 
@@ -314,15 +305,14 @@
 <div id="gameover-overlay" role="dialog" aria-modal="true" aria-label="Game over">
   <div class="go-box">
     <div class="go-title">Game Over</div>
-    <div class="go-crown">🏆</div>
     <div id="go-winner-name"></div>
     <div id="go-winner-score"></div>
-    <div id="go-scores-list"></div>
-    <button class="go-new-btn" onclick="newGame()">PLAY AGAIN</button>
+    <ol id="go-scores-list"></ol>
+    <button class="go-new-btn" onclick="newGame()">Play again</button>
   </div>
 </div>
 
-<script src="../js/nav.js"></script>
-<script src="../js/farkle.js"></script>
+<script src="../js/nav.js?v=2"></script>
+<script src="../js/farkle.js?v=2"></script>
 </body>
 </html>

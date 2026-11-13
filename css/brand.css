@@ -1,0 +1,38 @@
+/* ── Thirteen brand tokens ──────────────────────────────────────
+   Source: Visuals by John's Thirteen — Brand Kit V2
+   Four colours, one job each. Mango is a signal, not a fill.
+   Fonts: Ivy Presto Display → Instrument Serif (Google Fonts)
+          Aktiv Grotesk      → Inter Tight      (Google Fonts)
+   ─────────────────────────────────────────────────────────── */
+:root {
+  --onyx: #01010D;      /* base · backgrounds, cinematic shadows */
+  --offwhite: #F5F5F5;  /* text on dark · light canvases */
+  --duke: #00009C;      /* brand · blocks, avatars, hero panels */
+  --mango: #FDBE02;     /* signal · the period, CTAs, highlights */
+
+  /* Tints of the four — never new hues */
+  --onyx-2: #0A0A18;              /* raised surface on onyx */
+  --onyx-3: #12121F;              /* pressed / hover surface */
+  --line: rgba(245, 245, 245, 0.10);
+  --line-strong: rgba(245, 245, 245, 0.22);
+  --text-dim: rgba(245, 245, 245, 0.62);
+  --text-faint: rgba(245, 245, 245, 0.42);
+
+  --font-display: 'Instrument Serif', 'Times New Roman', Georgia, serif;
+  --font-ui: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif;
+
+  --radius: 14px;
+  --radius-sm: 10px;
+}
+
+/* Label / tag — Aktiv Med · 13–16 · +140 */
+.label {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* The mango period — the signature */
+.dot { color: var(--mango); }

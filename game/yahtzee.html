@@ -6,18 +6,21 @@
   <title>Yahtzee — Board Sauce</title>
 
   <!-- iOS icon for homescreen -->
-  <link rel="apple-touch-icon" href="icon-512.jpg">
-  <meta name="apple-mobile-web-app-title" content="BoardSauce by John L">
+  <link rel="apple-touch-icon" href="../icon-512.png">
+  <link rel="icon" type="image/png" href="../icon-512.png">
+  <meta name="apple-mobile-web-app-title" content="Board Sauce">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#01010D">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../css/styles.css">
-  <link rel="stylesheet" href="../css/nav.css">
-  <link rel="stylesheet" href="../css/yahtzee.css">
+  <link rel="stylesheet" href="../css/brand.css?v=2">
+  <link rel="stylesheet" href="../css/styles.css?v=2">
+  <link rel="stylesheet" href="../css/nav.css?v=2">
+  <link rel="stylesheet" href="../css/yahtzee.css?v=2">
 </head>
 <body>
 
@@ -31,13 +34,12 @@
       <a href="farkle.html">Farkle</a>
     </div>
     <button class="tl-hamburger" onclick="toggleNav()" aria-label="Toggle navigation menu" aria-expanded="false">
-      <svg class="tl-icon-open" width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
-        <rect width="20" height="2" rx="1" fill="currentColor"/>
-        <rect y="6" width="20" height="2" rx="1" fill="currentColor"/>
-        <rect y="12" width="20" height="2" rx="1" fill="currentColor"/>
+      <svg class="tl-icon-open" width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true">
+        <rect width="18" height="1.6" rx="0.8" fill="currentColor"/>
+        <rect y="8.4" width="12" height="1.6" rx="0.8" fill="currentColor"/>
       </svg>
-      <svg class="tl-icon-close" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-        <path d="M1 1l14 14M15 1L1 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <svg class="tl-icon-close" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M1 1l14 14M15 1L1 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
       </svg>
     </button>
   </div>
@@ -56,20 +58,9 @@
 
   <div class="setup-body">
 
-    <div class="setup-dice" aria-hidden="true">
-      <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="4" y="4" width="64" height="64" rx="14"
-          fill="#fef2f2" stroke="#b91c1c" stroke-width="3"/>
-        <circle cx="22" cy="22" r="5.5" fill="#b91c1c"/>
-        <circle cx="50" cy="22" r="5.5" fill="#b91c1c"/>
-        <circle cx="36" cy="36" r="5.5" fill="#b91c1c"/>
-        <circle cx="22" cy="50" r="5.5" fill="#b91c1c"/>
-        <circle cx="50" cy="50" r="5.5" fill="#b91c1c"/>
-      </svg>
-    </div>
-
-    <h1 class="setup-title">Yahtzee</h1>
-    <p class="setup-sub">Classic Dice Scoring Game</p>
+    <p class="label setup-label">Score tracker · 13 categories</p>
+    <h1 class="setup-title">Yahtzee<span class="dot">.</span></h1>
+    <p class="setup-sub">The classic dice scorecard, minus the pencil.</p>
 
     <p class="setup-section-label">Players</p>
 
@@ -83,11 +74,11 @@
       </div>
     </div>
 
-    <button class="add-player-btn" onclick="addPlayer()">+ Add Another Player</button>
+    <button class="add-player-btn" onclick="addPlayer()">+ Add another player</button>
 
     <div class="setup-actions">
-      <button class="yah-start-btn" onclick="startGame()">START GAME</button>
-      <button class="yah-rules-btn" onclick="showRules()">HOW TO PLAY</button>
+      <button class="yah-start-btn" onclick="startGame()">Start game</button>
+      <button class="yah-rules-btn" onclick="showRules()">How to play</button>
     </div>
 
   </div>
@@ -99,7 +90,7 @@
 <div id="game-screen">
 
   <div class="game-ctrl-bar">
-    <span class="game-status">● In Progress</span>
+    <span class="game-status">● In progress</span>
     <div class="game-ctrl-right">
       <button class="yah-pill yah-pill-rules" onclick="showRules()" aria-label="How to play">Rules</button>
       <button class="new-game-btn" onclick="newGame()">New Game</button>
@@ -126,8 +117,8 @@
 
 <!-- Yahtzee overlay -->
 <div id="yah-overlay" aria-hidden="true">
-  <div class="yah-ov-dice">🎲🎲🎲🎲🎲</div>
-  <div class="yah-ov-text">YAHTZEE!</div>
+  <div class="yah-ov-dice"><span class="yah-ov-die"></span><span class="yah-ov-die"></span><span class="yah-ov-die"></span><span class="yah-ov-die"></span><span class="yah-ov-die"></span></div>
+  <div class="yah-ov-text">Yahtzee!</div>
   <div class="yah-ov-sub">Five of a kind!</div>
 </div>
 
@@ -183,11 +174,11 @@
         </ul>
       </div>
     </div>
-    <button class="rules-done-btn" onclick="hideRules()">GOT IT</button>
+    <button class="rules-done-btn" onclick="hideRules()">Got it</button>
   </div>
 </div>
 
-<script src="../js/nav.js"></script>
-<script src="../js/yahtzee.js"></script>
+<script src="../js/nav.js?v=2"></script>
+<script src="../js/yahtzee.js?v=2"></script>
 </body>
 </html>

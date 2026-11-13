@@ -33,7 +33,7 @@ function start() {
 }
 
 function showGame() {
-  const titles = { flip7:'FLIP 7', vengeance:'VENGEANCE', combo:'COMBO' };
+  const titles = { flip7:'Flip 7', vengeance:'Vengeance', combo:'Combo' };
   document.getElementById('mode-title').innerText = titles[state.mode];
   document.getElementById('setup-screen').style.display='none';
   document.getElementById('game-screen').style.display='flex';
@@ -130,7 +130,7 @@ function render() {
 
   document.getElementById('display-name').innerText = state.players[state.active];
   document.getElementById('edit-context').innerText = state.editingRound === null ? 'Live Round' : `Editing Round ${state.editingRound + 1}`;
-  document.getElementById('display-score').innerText = activeData.state === 'playing' ? calcTotalScore(activeData) : (activeData.state === 'bust' ? 'BUST 💥' : 'STAY ✓');
+  document.getElementById('display-score').innerText = activeData.state === 'playing' ? calcTotalScore(activeData) : (activeData.state === 'bust' ? 'Bust' : 'Stay');
   document.getElementById('rd-num').innerText = state.round;
 
   let head = `<th>Player</th>`;
@@ -144,7 +144,7 @@ function render() {
 
   document.body.classList.toggle('has-winner', winningIdx !== -1);
   const saveBtn = document.getElementById('live-save-btn');
-  saveBtn.innerText = (winningIdx !== -1) ? "FINISH GAME 🎉" : "SAVE ROUND & RESET";
+  saveBtn.innerText = (winningIdx !== -1) ? "Finish game" : "Save round & reset";
   saveBtn.classList.toggle('winner-state', winningIdx !== -1);
 
   let bodyHtml = '';
